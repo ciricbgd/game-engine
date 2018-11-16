@@ -6,8 +6,8 @@ class Base {
     player;
     lastPressed = [];
 }
-
 let base = new Base(); // Making "base". Alternative to "this" outside of function scope
+
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
 

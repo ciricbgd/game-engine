@@ -1,21 +1,35 @@
+class Base {
+    playerScreen;
+    enemyScreen;
+    bulletScreen;
+    sp;//Screen point - used to scale entities
+    sw;
+    sh;
+}
+let base = new Base(); // Making "base". Alternative to "this" outside of function scope
+
+export function initEntities(playerScreen,enemyScreen,sp,sw,sh){
+    base.playerScreen = playerScreen;
+    base.enemyScreen = enemyScreen;
+    //base.bulletScreen = bulletScreen; add later
+    base.sp=sp;
+    base.sw=sw;
+    base.sh=sh;
+}
 class Entity {
     name; //Name of an entity
     x; //X coordinate of where the entity is drawn
     y; //Y coordinate of where the entity is drawn
     w; //Entity hitbox width
     h; //Entity hitbox height
-    sp; //Screen point - used in combination of W and H to scale entity
     speed; //Speed of an entity
     boxColor = "#AAAAAA"; //Hitbox color - used mostly for testing purposes
     screen; //Canvas ("layer") where entity is drawn
     accel = 100; //Acceleration of an entity 0-100
     hp; //Health points
-    constructor(name, x, y, sp, screen) {
-        this.name = name;
+    constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.sp = sp;
-        this.screen = screen;
     }
     draw = function () {
         this.screen.fillStyle = this.boxColor;
@@ -32,12 +46,7 @@ class Entity {
 }
 
 //Player
-export class Player extends Entity {
-    h = 120 * this.sp;
-    w = 100 * this.sp;
-    hp = 100;
-    speed = 18;
-    inv; //invulnerability timer
+class Unit extends Entity{
     hurt = function (dmg) {
         let clock = new Date();
         let time = clock.getTime();
@@ -56,12 +65,45 @@ export class Player extends Entity {
             this.die();
         }
     }
+
+}
+export class Player extends Unit {
+    screen=base.playerScreen;
+    ammo="Aicorn";
+    h = 120 * base.sp;
+    w = 100 * base.sp;
+    x=base.sw/2;
+    y=base.sh-(this.h/2+100*base.sp);
+    hp = 100;
+    speed = 18;
+    inv; //invulnerability timer
+    fire = function(){
+
+    }
 }
 
 //Enemies
-export class Enemy extends Entity {
-    h = 100 * this.sp;
-    w = 50 * this.sp;
+class Enemy extends Unit {
+    screen=base.enemyScreen;
+    h = 100 * base.sp;
+    w = 50 * base.sp;
     speed = 8;
     dmg = 20;
+}
+export class MosquitoBot extends Enemy{
+
+}
+
+//Bullets 
+class Bullet extends Entity{
+    interval;//interval of bullets generated per time unit
+}
+class FriendlyBullet extends Bullet{
+}
+class EnemyBullet extends Bullet{
+}
+export class Aicorn extends FriendlyBullet{
+    dmg=15;
+    speed=30;
+    interval=30;
 }
