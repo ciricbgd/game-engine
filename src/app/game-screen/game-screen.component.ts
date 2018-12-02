@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Player, Aicorn, MosquitoBot,initEntities } from '../game/entities';
-import { changeMovement } from '../game/controls';
-import { collides } from '../game/collision';
+import * as  entities from '../game/entities';
+import * as controls from '../game/controls';
+import * as collision from '../game/collision';
+import * as game from '../game/engine';
+import * as screen from '../game/screen';
+import * as ui from '../game/ui';
 declare let $: any;
 
 @Component({
@@ -15,63 +18,65 @@ export class GameScreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    //Screen vars
-    var sw = $("#container").width(); // Screen width
-    let sh = $("#container").height(); // Screen height
-    let sp = sw / 1280; // Size point - according to screen width
+    //initializing some of game engine logic
+    game;
+    collision;
+    screen;
+    ui;
+    //Passing values to components
+    screen.init(
+      $("#container").width(),
+      $("#container").height(),
+      document.querySelector("#playerScreen"),
+      document.querySelector("#bulletScreen"),
+      document.querySelector("#enemyScreen"),
+      document.querySelector("#background"),
+    );
+    ui.init(document.getElementById('statHp'));
+    entities.init(screen.playerScreen,
+      screen.bulletScreen,
+      screen.enemyScreen,
+      screen.sp,
+      screen.sw,
+      screen.sh);
+    controls;
 
-    //Draw canvas
-
-    //function to clear canvas
-    function clearCanvas(screens) {
-      screens.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
-    }
-
-    //Player canvas
-    let playerCanvas: any = document.querySelector("#gameScreen");
-    playerCanvas.width = sw;
-    playerCanvas.height = sh;
-    let playerScreen = playerCanvas.getContext("2d");
-
-    //Enemy canvas
-    let enemyCanvas: any = document.querySelector("#testScreen");
-    enemyCanvas.width = sw;
-    enemyCanvas.height = sh;
-    let enemyScreen = enemyCanvas.getContext("2d");
-
-    //!Draw canvas
-
-    //-------Initializator - passing values to other components
-    initEntities(playerScreen,enemyScreen,sp,sw,sh);
-    //---!---Initializator - passing values to other components
-
-    // Entities - player, enemies, bosses
-    let enemies = [];//Array of enemies
-    let enemyAttacks = [];//Array of enemy bullets and other attacks
-    let friendlyAttacks = [];//Array of friendly bullets and special attacks
-
-    const player = new Player();
-    player.draw();
-
-    const enemy1 = new MosquitoBot(sw / 2, sh / 4);
-    enemy1.boxColor = 'red';
-    enemy1.draw();
     // ! Entities - player, enemies, bosses
-
+    let enemy1 = new entities.MosquitoBot(screen.sp * 300, screen.sh / 4);
+    entities.enemies.push(enemy1);
+    let enemy2 = new entities.MosquitoBot(screen.sw / 2, screen.sh / 4);
+    entities.enemies.push(enemy2);
+    let enemy3 = new entities.MosquitoBot(screen.sw - screen.sp * 300, screen.sh / 4);
+    entities.enemies.push(enemy3);
+    enemy1 = undefined;
+    enemy2 = undefined;
+    enemy3 = undefined;
 
     function frameChange()//Detects changes on every frame 
     {
-      clearCanvas(playerScreen);//Mandatory clearing of canvas
+      //Update game time
+      game.updateTime();
 
-      //-------Movement Change
-      let newValue = changeMovement(sw, sh, player); player.x = newValue.x; player.y = newValue.y; player.accel = newValue.accel;
-      player.draw();
-      //---!---Movement Change
+      //Screen clearing
+      screen.clearScreen();
+
+      //Draw and move player
+      controls.changeMovement();
+
+      //Draw entities
+      entities.drawEntities();
+
+      //Player shoot
+      entities.player.shoot(true);
 
       //Collision detection
-      if (collides(player, enemy1)) { player.hurt(enemy1.dmg); }
+      collision.collisionDetection();
+
       requestAnimationFrame(frameChange);//Calling the function itself
     }
     frameChange();
+
+
+
   }
 }

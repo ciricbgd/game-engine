@@ -1,111 +1,104 @@
-class Base {
-    rightPressed = false;
-    leftPressed = false;
-    upPressed = false;
-    downPressed = false;
-    player;
-    lastPressed = [];
-}
-let base = new Base(); // Making "base". Alternative to "this" outside of function scope
+import * as screen from '../game/screen';
+import * as  entities from '../game/entities';
 
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
 
+var rightPressed = false;
+var leftPressed = false;
+var upPressed = false;
+var downPressed = false;
+var lastPressed = [];
+
 
 function keyDownHandler(event) {
     if (event.keyCode == 39) {
-        base.rightPressed = true;
+        rightPressed = true;
 
     }
     else if (event.keyCode == 37) {
-        base.leftPressed = true;
+        leftPressed = true;
 
     }
     if (event.keyCode == 40) {
-        base.downPressed = true;
+        downPressed = true;
 
     }
     else if (event.keyCode == 38) {
-        base.upPressed = true;
+        upPressed = true;
 
     }
 }
 
 function keyUpHandler(event) {
     if (event.keyCode == 39) {
-        base.rightPressed = false;
+        rightPressed = false;
 
     }
     else if (event.keyCode == 37) {
-        base.leftPressed = false;
+        leftPressed = false;
 
     }
     if (event.keyCode == 40) {
-        base.downPressed = false;
+        downPressed = false;
 
     }
     else if (event.keyCode == 38) {
-        base.upPressed = false;
+        upPressed = false;
 
     }
-}
-
-
-export function changeMovement(sw, sh, player) {
-    base.player = player;
-
-    if (!base.rightPressed && !base.leftPressed && !base.downPressed && !base.upPressed && base.player.accel > 0) {
-        base.player.accel -= 12;
-        slowDown(base.player.accel / 100);
-    }
-    else if ((base.rightPressed || base.leftPressed || base.downPressed || base.upPressed) && base.player.accel < 100) {
-        base.player.accel = 100;
-        playerMove(base.player.accel / 100);
-        base.lastPressed = [];
-    }
-    else {
-        playerMove(base.player.accel / 100);
-    }
-
-    if (base.player.accel < 0) { base.player.accel = 0; }
-    if (base.player.accel > 100) { base.player.accel = 100; }
-
-    //Border limitations
-    if (base.player.x - base.player.w / 2 < 0) { base.player.x = base.player.w / 2 }
-    if (base.player.x + base.player.w / 2 > sw) { base.player.x = sw - base.player.w / 2 }
-    if (base.player.y - base.player.h / 2 < 0) { base.player.y = base.player.h / 2 }
-    if (base.player.y + base.player.h / 2 > sh) { base.player.y = sh - base.player.h / 2 }
-    return {
-        x: base.player.x,
-        y: base.player.y,
-        accel: base.player.accel,
-        lastPressed: base.lastPressed,
-    };
 }
 
 function playerMove(accel) {
-    if (base.rightPressed) {
-        base.player.x += base.player.speed * accel;
-        base.lastPressed[0] = 'right';
+    if (rightPressed) {
+        entities.player.x += entities.player.speed * accel;
+        lastPressed[0] = 'right';
     }
-    else if (base.leftPressed) {
-        base.player.x -= base.player.speed * accel;
-        base.lastPressed[0] = 'left';
+    else if (leftPressed) {
+        entities.player.x -= entities.player.speed * accel;
+        lastPressed[0] = 'left';
     }
 
-    if (base.downPressed) {
-        base.player.y += base.player.speed * accel;
-        base.lastPressed[1] = 'down';
+    if (downPressed) {
+        entities.player.y += entities.player.speed * accel;
+        lastPressed[1] = 'down';
     }
-    else if (base.upPressed) {
-        base.player.y -= base.player.speed * accel;
-        base.lastPressed[1] = 'up';
+    else if (upPressed) {
+        entities.player.y -= entities.player.speed * accel;
+        lastPressed[1] = 'up';
     }
 }
 
 function slowDown(accel) {
-    if (base.lastPressed[0] == 'right') { base.player.x += base.player.speed * accel; }
-    else if (base.lastPressed[0] == 'left') { base.player.x -= base.player.speed * accel; }
-    if (base.lastPressed[1] == 'down') { base.player.y += base.player.speed * accel; }
-    else if (base.lastPressed[1] == 'up') { base.player.y -= base.player.speed * accel; }
+    if (lastPressed[0] == 'right') { entities.player.x += entities.player.speed * accel; }
+    else if (lastPressed[0] == 'left') { entities.player.x -= entities.player.speed * accel; }
+    if (lastPressed[1] == 'down') { entities.player.y += entities.player.speed * accel; }
+    else if (lastPressed[1] == 'up') { entities.player.y -= entities.player.speed * accel; }
+}
+
+export function changeMovement() {
+    entities.player.draw();
+
+    if (!rightPressed && !leftPressed && !downPressed && !upPressed && entities.player.accel > 0) {
+        entities.player.accel -= 20;
+        slowDown(entities.player.accel / 100);
+    }
+    else if ((rightPressed || leftPressed || downPressed || upPressed) && entities.player.accel < 100) {
+        entities.player.accel = 100;
+        playerMove(entities.player.accel / 100);
+        lastPressed = [];
+    }
+    else {
+        playerMove(entities.player.accel / 100);
+    }
+
+    if (entities.player.accel < 0) { entities.player.accel = 0; }
+    if (entities.player.accel > 100) { entities.player.accel = 100; }
+
+    //Border limitations
+    if (entities.player.x - entities.player.w / 2 < 0) { entities.player.x = entities.player.w / 2 }
+    if (entities.player.x + entities.player.w / 2 > screen.sw) { entities.player.x = screen.sw - entities.player.w / 2 }
+    if (entities.player.y - entities.player.h / 2 < 0) { entities.player.y = entities.player.h / 2 }
+    if (entities.player.y + entities.player.h / 2 > screen.sh) { entities.player.y = screen.sh - entities.player.h / 2 }
+
 }

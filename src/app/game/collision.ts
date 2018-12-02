@@ -1,12 +1,38 @@
+import * as  entities from '../game/entities';
+
 export function collides(entity1, entity2) {
-    if (entity2.w < entity1.w) {
-        let temoraryEntity = entity1;
-        entity1 = entity2;
-        entity2 = temoraryEntity;
+    if (entity1 == null || entity1 == undefined || entity2 == null || entity2 == undefined) {
+        return;
     }
     if (((entity1.x + entity1.w / 2 > entity2.x - entity2.w / 2 && entity1.x + entity1.w / 2 < entity2.x + entity2.w / 2) || (entity1.x - entity1.w / 2 > entity2.x - entity2.w / 2 && entity1.x - entity1.w / 2 < entity2.x + entity2.w / 2)) && ((entity1.y + entity1.h / 2 > entity2.y - entity2.h / 2 && entity1.y + entity1.h / 2 < entity2.y + entity2.h / 2) || (entity1.y - entity1.h / 2 > entity2.y - entity2.h / 2 && entity1.y - entity1.h / 2 < entity2.y + entity2.h / 2))) {
         return true;
     }
-    else { return false; }
+    let temoraryEntity = entity1;
+    entity1 = entity2;
+    entity2 = temoraryEntity;
+    if (((entity1.x + entity1.w / 2 > entity2.x - entity2.w / 2 && entity1.x + entity1.w / 2 < entity2.x + entity2.w / 2) || (entity1.x - entity1.w / 2 > entity2.x - entity2.w / 2 && entity1.x - entity1.w / 2 < entity2.x + entity2.w / 2)) && ((entity1.y + entity1.h / 2 > entity2.y - entity2.h / 2 && entity1.y + entity1.h / 2 < entity2.y + entity2.h / 2) || (entity1.y - entity1.h / 2 > entity2.y - entity2.h / 2 && entity1.y - entity1.h / 2 < entity2.y + entity2.h / 2))) {
+        return true;
+    }
+    return false;
 }
 
+export function collisionDetection() {
+    //For every enemy
+    for (let j = 0; j < entities.enemies.length; j++) {
+        //For every bullet
+        for (let i = 0; i < entities.friendlyAttacks.length; i++) {
+            //If player hits enemy
+            if (collides(entities.player, entities.enemies[j])) {
+                entities.player.hurt(entities.enemies[j].dmg);
+            }
+            //If bullet hits enemy
+            if (collides(entities.friendlyAttacks[i], entities.enemies[j])) {
+                entities.enemies[j].hurt(entities.friendlyAttacks[i].dmg); // Enemy hurt  
+                //If enemy hp is lower than 0
+                if (entities.enemies[j].hp <= 0) { entities.enemies[j].die(j); }
+                entities.friendlyAttacks[i].die(i); //Bullet death
+            }
+
+        }
+    }
+}
