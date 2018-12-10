@@ -11,7 +11,7 @@ class Base {
 export var player;
 
 
-let base = new Base(); // Making "base". Alternative to "this" outside of function scope
+export var base = new Base(); // Making "base". Alternative to "this" outside of function scope
 // Entities - player, enemies, bosses
 export var enemies = [];//Array of existing enemies
 export var ammo = {};//Array of existing bullets
@@ -38,7 +38,9 @@ class Entity {
     x; //X coordinate of where the entity is drawn
     y; //Y coordinate of where the entity is drawn
     w; //Entity hitbox width
+    width;
     h; //Entity hitbox height
+    height;
     speed; //Speed of an entity
     boxColor = "#AAAAAA"; //Hitbox color - used mostly for testing purposes
     screen; //Canvas ("layer") where entity is drawn
@@ -78,8 +80,10 @@ export class Player extends Unit {
     type = 'friend';
     screen = base.playerScreen;
     ammo = ammo['Aicorn'];
-    h = 120 * base.sp;
-    w = 100 * base.sp;
+    height = 120;
+    h = this.height * base.sp;
+    width = 100;
+    w = this.width * base.sp;
     x = base.sw / 2;
     y = base.sh - (this.h / 2 + 100 * base.sp);
     hp = 100;
@@ -126,9 +130,12 @@ class Enemy extends Unit {
         this.hp -= dmg;
     }
 }
+
 export class MosquitoBot extends Enemy {
-    h = 120 * base.sp;
-    w = 80 * base.sp;
+    height = 120;
+    h = this.height * base.sp;
+    width = 80;
+    w = this.width * base.sp;
     speed = 8;
     dmg = 20;
     hp = 100;
@@ -180,5 +187,19 @@ export function drawEntities() {
         friendlyAttacks[i].draw(); // Drawing the bullets
         friendlyAttacks[i].y -= friendlyAttacks[i].speed; //Moving the bullets
         if (friendlyAttacks[i].y < 0) { friendlyAttacks.splice(i, 1); } //Removing bullets when they get off screen
+    }
+}
+
+//Update entities on screen resize
+export function updateEntities() {
+    if (player != undefined) {
+        player.h = player.height * base.sp;
+        player.w = player.width * base.sp;
+    }
+    if (enemies != undefined) {
+        for (let i = 0; i < enemies.length; i++) {
+            enemies[i].h = enemies[i].height * base.sp;
+            enemies[i].w = enemies[i].width * base.sp;
+        }
     }
 }

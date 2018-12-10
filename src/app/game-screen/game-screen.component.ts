@@ -25,12 +25,12 @@ export class GameScreenComponent implements OnInit {
     ui;
     //Passing values to components
     screen.init(
-      $("#container").width(),
-      $("#container").height(),
       document.querySelector("#playerScreen"),
       document.querySelector("#bulletScreen"),
       document.querySelector("#enemyScreen"),
       document.querySelector("#background"),
+      document.querySelector("#left-side"),
+      document.querySelector("#right-side")
     );
     ui.init(document.getElementById('statHp'));
     entities.init(screen.playerScreen,
