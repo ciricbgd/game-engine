@@ -10,3 +10,18 @@ export function wait(timeMs) {
     return (time + timeMs);
 }
 
+export var status = 'unpaused';
+
+export function togglePause(pauseButton){
+    status=pauseButton;
+}
+
+
+export function checkGameStatus(){
+    if(status=='paused'){
+        //The game is paused
+        
+    }
+    console.log(status);
+}
+

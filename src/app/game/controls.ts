@@ -1,13 +1,33 @@
 import * as screen from '../game/screen';
 import * as  entities from '../game/entities';
+import * as game from '../game/engine';
 
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
+document.addEventListener("mousemove", mouseMoveHandler, false); // Listening to mouse movement
 
+//Mouse movement
+export function mouseMoveHandler(e) {
+    var mouseX = e.clientX - screen.playerCanvas.offsetLeft;
+    var mouseY = e.clientY - screen.playerCanvas.offsetTop;
+
+    //Border limitations
+    if(mouseX < entities.player.w/2){ entities.player.x = entities.player.w / 2 }
+    else if (mouseX + entities.player.w/2 > screen.sw){ entities.player.x = screen.sw - entities.player.w / 2 }
+    else{entities.player.x = mouseX;}
+
+    if(mouseY < entities.player.h/2){ entities.player.y = entities.player.h / 2 }
+    else if (mouseY + entities.player.h/2 > screen.sh){ entities.player.y = screen.sh - entities.player.h / 2 }
+    else{entities.player.y = mouseY;}
+
+}
+
+//Keyboard movement
 var rightPressed = false;
 var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
+export var escapePressed = false;
 var lastPressed = [];
 
 
@@ -27,6 +47,19 @@ function keyDownHandler(event) {
     else if (event.keyCode == 38) {
         upPressed = true;
 
+    }
+
+    if (event.keyCode == 27) {
+        if(escapePressed==true)
+        {
+            game.togglePause('unpaused');
+            escapePressed=false;
+        }
+        else
+        {
+            game.togglePause('paused');
+            escapePressed=true;
+        }
     }
 }
 
@@ -48,6 +81,7 @@ function keyUpHandler(event) {
 
     }
 }
+
 
 function playerMove(accel) {
     if (rightPressed) {
@@ -95,6 +129,8 @@ export function changeMovement() {
     if (entities.player.accel < 0) { entities.player.accel = 0; }
     if (entities.player.accel > 100) { entities.player.accel = 100; }
 
+    //Mouse movement 
+    mouseMoveHandler;
     //Border limitations
     if (entities.player.x - entities.player.w / 2 < 0) { entities.player.x = entities.player.w / 2 }
     if (entities.player.x + entities.player.w / 2 > screen.sw) { entities.player.x = screen.sw - entities.player.w / 2 }

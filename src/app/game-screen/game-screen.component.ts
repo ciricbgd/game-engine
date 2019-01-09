@@ -32,13 +32,18 @@ export class GameScreenComponent implements OnInit {
       document.querySelector("#left-side"),
       document.querySelector("#right-side")
     );
-    ui.init(document.getElementById('statHp'));
+    ui.init(
+      document.getElementById('statHp'),
+      document.getElementById("game-screen"),
+      document.getElementById("pauseScreen")
+    );
     entities.init(screen.playerScreen,
       screen.bulletScreen,
       screen.enemyScreen,
       screen.sp,
       screen.sw,
-      screen.sh);
+      screen.sh
+    );
     controls;
 
     // ! Entities - player, enemies, bosses
@@ -54,23 +59,31 @@ export class GameScreenComponent implements OnInit {
 
     function frameChange()//Detects changes on every frame 
     {
-      //Update game time
-      game.updateTime();
+      game.checkGameStatus();
+      //Hide mouse cursor
+      ui.updateUi(game.status);
+      
+      if(game.status!='paused'){
 
-      //Screen clearing
-      screen.clearScreen();
+        //Update game time
+        game.updateTime();
 
-      //Draw and move player
-      controls.changeMovement();
+        //Screen clearing
+        screen.clearScreen();
 
-      //Draw entities
-      entities.drawEntities();
+        //Draw and move player
+        controls.changeMovement();
 
-      //Player shoot
-      entities.player.shoot(true);
+        //Draw entities
+        entities.drawEntities();
 
-      //Collision detection
-      collision.collisionDetection();
+        //Player shoot
+        entities.player.shoot(true);
+
+        //Collision detection
+        collision.collisionDetection();
+      }
+      
 
       requestAnimationFrame(frameChange);//Calling the function itself
     }

@@ -56,3 +56,35 @@ canvas {
 #right-side {
   right: 0;
 }
+
+
+// Arrow input - deprecated
+// .arrow{
+//   position:absolute;
+
+//   width:50px;
+//   height:50px;
+
+//   margin:50px;
+// }
+// .arrow *{
+//   //fill:red;
+// }
+// #ArrowUp{left:0;top:0;}
+// #ArrowDown{left:0;bottom:0;transform:rotate(180deg);}
+// #ArrowLeft{right:0;top:0;transform:rotate(270deg);}
+// #ArrowRight{right:0;bottom:0;transform:rotate(90deg);}
+
+//Pause Screen
+#pauseScreen{
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.5);
+  position:absolute;
+  color:white;
+  text-align: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
