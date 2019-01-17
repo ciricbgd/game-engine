@@ -5,6 +5,7 @@ import * as collision from '../game/collision';
 import * as game from '../game/engine';
 import * as screen from '../game/screen';
 import * as ui from '../game/ui';
+
 declare let $: any;
 
 @Component({
@@ -13,9 +14,6 @@ declare let $: any;
   styleUrls: ['./game-screen.component.scss']
 })
 export class GameScreenComponent implements OnInit {
-
-  constructor() {
-  }
 
   ngOnInit() {
     //initializing some of game engine logic
@@ -46,24 +44,14 @@ export class GameScreenComponent implements OnInit {
     );
     controls;
 
-    // ! Entities - player, enemies, bosses
-    let enemy1 = new entities.MosquitoBot(screen.sp * 300, screen.sh / 4);
-    entities.enemies.push(enemy1);
-    let enemy2 = new entities.MosquitoBot(screen.sw / 2, screen.sh / 4);
-    entities.enemies.push(enemy2);
-    let enemy3 = new entities.MosquitoBot(screen.sw - screen.sp * 300, screen.sh / 4);
-    entities.enemies.push(enemy3);
-    enemy1 = undefined;
-    enemy2 = undefined;
-    enemy3 = undefined;
 
     function frameChange()//Detects changes on every frame 
     {
       game.checkGameStatus();
       //Hide mouse cursor
       ui.updateUi(game.status);
-      
-      if(game.status!='paused'){
+
+      if (game.status != 'paused') {
 
         //Update game time
         game.updateTime();
@@ -83,7 +71,7 @@ export class GameScreenComponent implements OnInit {
         //Collision detection
         collision.collisionDetection();
       }
-      
+
 
       requestAnimationFrame(frameChange);//Calling the function itself
     }

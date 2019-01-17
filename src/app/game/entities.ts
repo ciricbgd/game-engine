@@ -1,4 +1,5 @@
 import * as game from '../game/engine';
+import * as screen from '../game/screen';
 import * as ui from '../game/ui';
 class Base {
     playerScreen;
@@ -34,6 +35,7 @@ export function init(playerScreen, bulletScreen, enemyScreen, sp, sw, sh) {
 }
 
 class Entity {
+    id;
     name; //Name of an entity
     x; //X coordinate of where the entity is drawn
     y; //Y coordinate of where the entity is drawn
@@ -46,11 +48,11 @@ class Entity {
     screen; //Canvas ("layer") where entity is drawn
     accel = 100; //Acceleration of an entity 0-100
     hp; //Health points
-    draw = function () {
+    draw() {
         this.screen.fillStyle = this.boxColor;
         this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     }
-    hurt = function (dmg) {
+    hurt(dmg) {
         this.hp -= dmg;
     }
 }
@@ -69,7 +71,7 @@ class Unit extends Entity {
                     let attack = new Aicorn(x, y);
                     friendlyAttacks.push(attack);
                 }
-                this.shootWait = game.wait(this.ammo.interval);//Interval between shots
+                this.shootWait = game.delayTime(this.ammo.interval);//Interval between shots
             }
         }
     }
@@ -89,7 +91,7 @@ export class Player extends Unit {
     hp = 100;
     speed = 20 * base.sp;
     inv; //invulnerability timer
-    hurt = function (dmg) {
+    hurt(dmg) {
         let clock = new Date();
         let time = clock.getTime();
         if (this.inv == null) {
@@ -108,7 +110,7 @@ export class Player extends Unit {
             player.die();
         }
     }
-    die = function () {
+    die() {
         console.log('Game Over');
     }
 }
@@ -123,15 +125,16 @@ class Enemy extends Unit {
         this.y = y;
     }
     screen = base.enemyScreen;
-    die = function (i) {
+    die(i) {
         enemies.splice(i, 1);
     }
-    hurt = function (dmg) {
+    hurt(dmg) {
         this.hp -= dmg;
     }
 }
 
 export class MosquitoBot extends Enemy {
+    id = 1;
     height = 120;
     h = this.height * base.sp;
     width = 80;
@@ -152,11 +155,11 @@ class Bullet extends Entity {
         this.y = y;
     }
     interval;//interval of bullets generated per time unit
-    die = function (i) {
+    die(i) {
         if (this.type = 'friendly') {
             friendlyAttacks.splice(i, 1);
         }
-        if (this.type = 'enemy') {
+        else if (this.type = 'enemy') {
             enemyAttacks.splice(i, 1);
         }
     }
@@ -170,10 +173,19 @@ export class Aicorn extends Bullet {
 }
 
 
+// List of enemy types
+export var enemyTypes = [
+    undefined,//0
+    MosquitoBot//1
 
+];
 
-
-
+//Spawning enemies
+export function spawnEnemy(id, place) {
+    let pos = screen.gridPos(place);
+    let enemy = new enemyTypes[id](pos[0], pos[1]);
+    enemies.push(enemy);
+}
 
 //Drawing all entities
 export function drawEntities() {

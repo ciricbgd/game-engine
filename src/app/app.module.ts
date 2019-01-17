@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GameScreenComponent } from './game-screen/game-screen.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -11,6 +13,8 @@ import { GameScreenComponent } from './game-screen/game-screen.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

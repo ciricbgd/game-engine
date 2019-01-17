@@ -3,6 +3,8 @@ import * as entities from '../game/entities';
 export var sw;// Screen width
 export var sh;// Screen height
 export var sp;// Size point - according to screen width
+export var cbX;//Checkerboard point in width
+export var cbY;//Checkerboard point in height
 
 //Player canvas
 export var playerCanvas: any;
@@ -67,6 +69,10 @@ function resize() {
         entities.updateEntities();
     }
 
+    //Checkerboard points
+    cbX = sw / 54;
+    cbY = sw / 52;
+
     //Player canvas
     playerCanvas.width = sw;
     playerCanvas.height = sh;
@@ -97,4 +103,41 @@ export function clearScreen() {
     clearCanvas(playerScreen, playerCanvas);
     clearCanvas(bulletScreen, bulletCanvas);
     clearCanvas(enemyScreen, enemyCanvas);
+}
+
+//Gets coordinates from spawn grid (src/assets/SpawnGrid.jpg)
+export function gridPos(place) {
+    let x, y, number = place.substr(1), letter = (place.substr(0, 1)).toLowerCase();
+    switch (letter) {
+        case 'a': letter = 1; break;
+        case 'b': letter = 2; break;
+        case 'c': letter = 3; break;
+        case 'd': letter = 4; break;
+        case 'e': letter = 5; break;
+        case 'f': letter = 6; break;
+        case 'g': letter = 7; break;
+        case 'h': letter = 8; break;
+        case 'i': letter = 9; break;
+        case 'j': letter = 10; break;
+        case 'k': letter = 11; break;
+        case 'l': letter = 12; break;
+        case 'm': letter = 13; break;
+        case 'n': letter = 14; break;
+        case 'o': letter = 15; break;
+        case 'p': letter = 16; break;
+        case 'q': letter = 17; break;
+        case 'r': letter = 18; break;
+        case 's': letter = 19; break;
+        case 't': letter = 20; break;
+        case 'u': letter = 21; break;
+        case 'v': letter = 22; break;
+        case 'w': letter = 23; break;
+        case 'x': letter = 24; break;
+        case 'y': letter = 25; break;
+        case 'z': letter = 26; break;
+    }
+
+    x = number * cbX * 2 - cbX;
+    y = letter * cbY * 2 - cbY;
+    return [x, y];
 }
