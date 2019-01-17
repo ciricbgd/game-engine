@@ -1,11 +1,23 @@
 {
   "title": "Welcome to level 1",
-  "wave": {
-    "enemies": 
-    [
-      {"id":1, "pos": "G7"}, 
-      {"id":1, "pos": "G14"}, 
-      {"id":1, "pos": "G21"} 
-    ]
-  }
+  "background": [],
+  "music":"",
+  "bossmusic":"",
+  "waves":
+  [
+    {
+      "pauseBefore" : 0,
+      "enemies": 
+      [
+        {"id":1, "pos": "G7"}, 
+        {"id":1, "pos": "G14"}, 
+        {"id":1, "pos": "G21"} 
+      ],
+      "pickups": 
+      [
+        {"id":1, "pos": "i14", "condition": ""}
+      ],
+      "pauseAfter":0
+    }
+  ]
 }

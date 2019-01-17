@@ -44,6 +44,7 @@ export class GameScreenComponent implements OnInit {
     );
     controls;
 
+    game.changeLevel(1);
 
     function frameChange()//Detects changes on every frame 
     {
