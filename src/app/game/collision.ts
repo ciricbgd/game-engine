@@ -19,12 +19,12 @@ export function collides(entity1, entity2) {
 export function collisionDetection() {
     //For every enemy
     for (let j = 0; j < entities.enemies.length; j++) {
-        //For every bullet
+        //If player hits enemy
+        if (collides(entities.player, entities.enemies[j])) {
+            entities.player.hurt(entities.enemies[j].dmg);
+        }
+        //For every friendly bullet
         for (let i = 0; i < entities.friendlyAttacks.length; i++) {
-            //If player hits enemy
-            if (collides(entities.player, entities.enemies[j])) {
-                entities.player.hurt(entities.enemies[j].dmg);
-            }
             //If bullet hits enemy
             if (collides(entities.friendlyAttacks[i], entities.enemies[j])) {
                 entities.enemies[j].hurt(entities.friendlyAttacks[i].dmg); // Enemy hurt  
@@ -32,7 +32,15 @@ export function collisionDetection() {
                 if (entities.enemies[j].hp <= 0) { entities.enemies[j].die(j); }
                 entities.friendlyAttacks[i].die(i); //Bullet death
             }
+        }
 
+        //For every enemy bullet
+        for (let i = 0; i < entities.enemyAttacks.length; i++) {
+            //If bullet hits enemy
+            if (collides(entities.enemyAttacks[i], entities.player)) {
+                entities.player.hurt(entities.enemyAttacks[i].dmg); // Player hurt
+                entities.enemyAttacks[i].die(i); //Bullet death
+            }
         }
     }
 }

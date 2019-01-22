@@ -10,7 +10,6 @@
       "enemies": 
       [
         {"id":1, "pos": "G7"}, 
-        {"id":1, "pos": "G14"}, 
         {"id":1, "pos": "G21"} 
       ],
       "pickups": 

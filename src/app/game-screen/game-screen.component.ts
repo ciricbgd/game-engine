@@ -35,13 +35,7 @@ export class GameScreenComponent implements OnInit {
       document.getElementById("game-screen"),
       document.getElementById("pauseScreen")
     );
-    entities.init(screen.playerScreen,
-      screen.bulletScreen,
-      screen.enemyScreen,
-      screen.sp,
-      screen.sw,
-      screen.sh
-    );
+    entities.init();
     controls;
 
     game.changeLevel(1);
@@ -66,11 +60,9 @@ export class GameScreenComponent implements OnInit {
         //Draw entities
         entities.drawEntities();
 
-        //Player shoot
-        entities.player.shoot(true);
-
         //Collision detection
         collision.collisionDetection();
+
       }
 
 

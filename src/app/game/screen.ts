@@ -61,14 +61,6 @@ function resize() {
         sp = sh / 1280;
     }
 
-    //Update screen width and height for redrawing entities
-    if (entities.base != undefined) {
-        entities.base.sw = sw;
-        entities.base.sh = sh;
-        entities.base.sp = sp;
-        entities.updateEntities();
-    }
-
     //Checkerboard points
     cbX = sw / 54;
     cbY = sw / 52;
