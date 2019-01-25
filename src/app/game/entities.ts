@@ -183,7 +183,9 @@ class Enemy extends Unit {
         pointB.x = pointB.location[0];
         pointB.y = pointB.location[1];
 
-        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y) }
+        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y), xMove: undefined, yMove: undefined }
+        difference.xMove = this.speed;
+        difference.yMove = this.speed;
 
 
         if (difference.x <= this.speed && difference.y <= this.speed) {
@@ -191,10 +193,10 @@ class Enemy extends Unit {
             if (this.spawnpath.progress.start == this.spawnpath.progress.finish) { this.status = "idle"; }
         }
         else {
-            if (this.x != pointB.x && this.x < pointB.x) { this.x += this.speed }
-            else if (this.x != pointB.x && this.x > pointB.x) { this.x -= this.speed }
-            if (this.y != pointB.y && this.y < pointB.y) { this.y += this.speed }
-            else if (this.y != pointB.y && this.y > pointB.y) { this.y -= this.speed }
+            if (difference.x >= this.speed && this.x < pointB.x) { this.x += difference.xMove }
+            else if (difference.x >= this.speed && this.x > pointB.x) { this.x -= difference.xMove }
+            if (difference.y >= this.speed && this.y < pointB.y) { this.y += difference.yMove }
+            else if (difference.y >= this.speed && this.y > pointB.y) { this.y -= difference.yMove }
 
         }
     }
@@ -208,7 +210,7 @@ export class MosquitoBot extends Enemy {
         this.h = this.height * screen.sp;
         this.width = 80;
         this.w = this.width * screen.sp;
-        this.speed = 8;
+        this.speed = 5;
         this.dmg = 20;
         this.hp = 100;
         this.x = x;
