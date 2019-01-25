@@ -98,38 +98,81 @@ export function clearScreen() {
 }
 
 //Gets coordinates from spawn grid (src/assets/SpawnGrid.jpg)
-export function gridPos(place) {
-    let x, y, number = place.substr(1), letter = (place.substr(0, 1)).toLowerCase();
-    switch (letter) {
-        case 'a': letter = 1; break;
-        case 'b': letter = 2; break;
-        case 'c': letter = 3; break;
-        case 'd': letter = 4; break;
-        case 'e': letter = 5; break;
-        case 'f': letter = 6; break;
-        case 'g': letter = 7; break;
-        case 'h': letter = 8; break;
-        case 'i': letter = 9; break;
-        case 'j': letter = 10; break;
-        case 'k': letter = 11; break;
-        case 'l': letter = 12; break;
-        case 'm': letter = 13; break;
-        case 'n': letter = 14; break;
-        case 'o': letter = 15; break;
-        case 'p': letter = 16; break;
-        case 'q': letter = 17; break;
-        case 'r': letter = 18; break;
-        case 's': letter = 19; break;
-        case 't': letter = 20; break;
-        case 'u': letter = 21; break;
-        case 'v': letter = 22; break;
-        case 'w': letter = 23; break;
-        case 'x': letter = 24; break;
-        case 'y': letter = 25; break;
-        case 'z': letter = 26; break;
-    }
+export function gridPos(place: any) {
+    //If it is a single place
+    if (typeof place == "string") {
+        let numberX = parseInt(place.toString().substr(1)), letter = (place.toString().substr(0, 1)).toLowerCase(), numberY;
+        switch (letter) {
+            case 'a': numberY = 1; break;
+            case 'b': numberY = 2; break;
+            case 'c': numberY = 3; break;
+            case 'd': numberY = 4; break;
+            case 'e': numberY = 5; break;
+            case 'f': numberY = 6; break;
+            case 'g': numberY = 7; break;
+            case 'h': numberY = 8; break;
+            case 'i': numberY = 9; break;
+            case 'j': numberY = 10; break;
+            case 'k': numberY = 11; break;
+            case 'l': numberY = 12; break;
+            case 'm': numberY = 13; break;
+            case 'n': numberY = 14; break;
+            case 'o': numberY = 15; break;
+            case 'p': numberY = 16; break;
+            case 'q': numberY = 17; break;
+            case 'r': numberY = 18; break;
+            case 's': numberY = 19; break;
+            case 't': numberY = 20; break;
+            case 'u': numberY = 21; break;
+            case 'v': numberY = 22; break;
+            case 'w': numberY = 23; break;
+            case 'x': numberY = 24; break;
+            case 'y': numberY = 25; break;
+            case 'z': numberY = 26; break;
+        }
 
-    x = number * cbX * 2 - cbX;
-    y = letter * cbY * 2 - cbY;
-    return [x, y];
+        let x = numberX * cbX * 2 - cbX;
+        let y = numberY * cbY * 2 - cbY;
+        return [x, y];
+    }
+    //If it's multiple places
+    else if (typeof place == "object") {
+        let coordinates = [];
+        place.forEach(place => {
+            let numberX = parseInt(place.toString().substr(1)), letter = (place.toString().substr(0, 1)).toLowerCase(), numberY;
+            switch (letter) {
+                case 'a': numberY = 1; break;
+                case 'b': numberY = 2; break;
+                case 'c': numberY = 3; break;
+                case 'd': numberY = 4; break;
+                case 'e': numberY = 5; break;
+                case 'f': numberY = 6; break;
+                case 'g': numberY = 7; break;
+                case 'h': numberY = 8; break;
+                case 'i': numberY = 9; break;
+                case 'j': numberY = 10; break;
+                case 'k': numberY = 11; break;
+                case 'l': numberY = 12; break;
+                case 'm': numberY = 13; break;
+                case 'n': numberY = 14; break;
+                case 'o': numberY = 15; break;
+                case 'p': numberY = 16; break;
+                case 'q': numberY = 17; break;
+                case 'r': numberY = 18; break;
+                case 's': numberY = 19; break;
+                case 't': numberY = 20; break;
+                case 'u': numberY = 21; break;
+                case 'v': numberY = 22; break;
+                case 'w': numberY = 23; break;
+                case 'x': numberY = 24; break;
+                case 'y': numberY = 25; break;
+                case 'z': numberY = 26; break;
+            }
+
+            let x = numberX * cbX * 2 - cbX;
+            let y = numberY * cbY * 2 - cbY;
+            coordinates.push([x, y]);
+        });
+        return coordinates;
+    }
 }

@@ -29,6 +29,7 @@ export function init() {
 class Entity {
     id;
     name; //Name of an entity
+    status;//Current status of an enemie - idle - dying - spawning
     x; //X coordinate of where the entity is drawn
     y; //Y coordinate of where the entity is drawn
     w; //Entity hitbox width
@@ -46,6 +47,9 @@ class Entity {
     }
     hurt(dmg) {
         this.hp -= dmg;
+    }
+    changestatus(status) {
+        this.status = status;
     }
 }
 
@@ -145,8 +149,16 @@ class Enemy extends Unit {
         this.screen = screen.enemyScreen;
         this.x = x;
         this.y = y;
+        this.status = "spawning";
     }
     dmg = 0;
+    spawnpath = {
+        "progress": {
+            "start": 1,
+            "finish": undefined
+        },
+        "places": undefined
+    }
     die(i) {
         enemies.splice(i, 1);
     }
@@ -164,6 +176,26 @@ class Enemy extends Unit {
                     this.shootWait = game.delayTime(attack.interval);//Interval between shots
                 }
             }
+        }
+    }
+    followSpawnPath() {
+        let pointB = { x: undefined, y: undefined, location: screen.gridPos(this.spawnpath.places[this.spawnpath.progress.start]) };
+        pointB.x = pointB.location[0];
+        pointB.y = pointB.location[1];
+
+        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y) }
+
+
+        if (difference.x <= this.speed && difference.y <= this.speed) {
+            this.spawnpath.progress.start++;
+            if (this.spawnpath.progress.start == this.spawnpath.progress.finish) { this.status = "idle"; }
+        }
+        else {
+            if (this.x != pointB.x && this.x < pointB.x) { this.x += this.speed }
+            else if (this.x != pointB.x && this.x > pointB.x) { this.x -= this.speed }
+            if (this.y != pointB.y && this.y < pointB.y) { this.y += this.speed }
+            else if (this.y != pointB.y && this.y > pointB.y) { this.y -= this.speed }
+
         }
     }
 }
@@ -236,7 +268,13 @@ export var bulletType = [
 //Spawning enemies
 export function spawnEnemy(id, place) {
     let pos = screen.gridPos(place);
-    let enemy = new enemyType[id](pos[0], pos[1]);
+    let enemy = new enemyType[id](pos[0][0], pos[0][1]);
+    //If it has a spawn path instead of one spawn place
+    if (typeof place == "object") {
+        enemy.spawnpath.progress.finish = place.length;
+        enemy.spawnpath.places = place;
+        enemy.spawnpath.progress.finish = place.length;
+    }
     enemies.push(enemy);
 }
 
@@ -279,5 +317,15 @@ export function updateEntities() {
         }
     }
 }
+
+//Moving enemies
+export function moveEnemies() {
+    enemies.forEach(enemy => {
+        if (enemy.status == "spawning") {
+            enemy.followSpawnPath();
+        }
+    });
+}
+
 
 //!--------------------- FUNCTIONS ---------------------------------------------------------------FUNCTIONS-----------------------------------/

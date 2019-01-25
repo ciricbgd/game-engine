@@ -60,6 +60,9 @@ export class GameScreenComponent implements OnInit {
         //Draw entities
         entities.drawEntities();
 
+        //Move enemies
+        entities.moveEnemies();
+
         //Collision detection
         collision.collisionDetection();
 

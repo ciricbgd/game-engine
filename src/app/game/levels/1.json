@@ -9,8 +9,7 @@
       "pauseBefore" : 0,
       "enemies": 
       [
-        {"id":1, "pos": "G7"}, 
-        {"id":1, "pos": "G21"} 
+        {"id":1, "pos": ["G7", "G14", "Z20"]}
       ],
       "pickups": 
       [
