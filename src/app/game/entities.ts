@@ -142,6 +142,18 @@ export class Player extends Unit {
 //Enemies
 
 class Enemy extends Unit {
+    dmg = 0;
+    speed = 0;
+    spawnpath = {
+        "progress": {
+            "start": 1,
+            "finish": undefined
+        },
+        "places": undefined,
+        "speed": undefined,
+        "moveX": undefined,
+        "moveY": undefined
+    }
     constructor(x?: number, y?: number) {
         super();
         this.type = 'enemy';
@@ -150,14 +162,7 @@ class Enemy extends Unit {
         this.x = x;
         this.y = y;
         this.status = "spawning";
-    }
-    dmg = 0;
-    spawnpath = {
-        "progress": {
-            "start": 1,
-            "finish": undefined
-        },
-        "places": undefined
+        this.spawnpath.speed = screen.sp * 220;
     }
     die(i) {
         enemies.splice(i, 1);
@@ -183,20 +188,20 @@ class Enemy extends Unit {
         pointB.x = pointB.location[0];
         pointB.y = pointB.location[1];
 
-        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y), xMove: undefined, yMove: undefined }
-        difference.xMove = this.speed;
-        difference.yMove = this.speed;
+        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y) }
 
+        if (this.spawnpath.moveX == undefined) { this.spawnpath.moveX = difference.x / this.spawnpath.speed }
+        if (this.spawnpath.moveY == undefined) { this.spawnpath.moveY = difference.y / this.spawnpath.speed }
 
         if (difference.x <= this.speed && difference.y <= this.speed) {
             this.spawnpath.progress.start++;
             if (this.spawnpath.progress.start == this.spawnpath.progress.finish) { this.status = "idle"; }
         }
         else {
-            if (difference.x >= this.speed && this.x < pointB.x) { this.x += difference.xMove }
-            else if (difference.x >= this.speed && this.x > pointB.x) { this.x -= difference.xMove }
-            if (difference.y >= this.speed && this.y < pointB.y) { this.y += difference.yMove }
-            else if (difference.y >= this.speed && this.y > pointB.y) { this.y -= difference.yMove }
+            if (difference.x >= this.speed && this.x < pointB.x) { this.x += this.spawnpath.moveX }
+            else if (difference.x >= this.speed && this.x > pointB.x) { this.x -= this.spawnpath.moveY }
+            if (difference.y >= this.speed && this.y < pointB.y) { this.y += this.spawnpath.moveY }
+            else if (difference.y >= this.speed && this.y > pointB.y) { this.y -= this.spawnpath.moveY }
 
         }
     }
