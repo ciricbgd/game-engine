@@ -146,7 +146,7 @@ class Enemy extends Unit {
     speed = 0;
     spawnpath = {
         "progress": {
-            "start": 1,
+            "start": 0,
             "finish": undefined
         },
         "places": undefined,
@@ -162,7 +162,7 @@ class Enemy extends Unit {
         this.x = x;
         this.y = y;
         this.status = "spawning";
-        this.spawnpath.speed = screen.sp * 220;
+        this.spawnpath.speed = screen.sp * 110;
     }
     die(i) {
         enemies.splice(i, 1);
@@ -275,14 +275,21 @@ export var bulletType = [
 //Spawning enemies
 export function spawnEnemy(id, place) {
     let pos = screen.gridPos(place);
-    let enemy = new enemyType[id](pos[0][0], pos[0][1]);
-    //If it has a spawn path instead of one spawn place
-    if (typeof place == "object") {
-        enemy.spawnpath.progress.finish = place.length;
-        enemy.spawnpath.places = place;
-        enemy.spawnpath.progress.finish = place.length;
+    let startX, startY;
+    if (pos.length <= 1) {
+        startX = (pos[0][0] < screen.sw / 2) ? (-pos[0][0]) : (screen.sw + pos[0][0]);
+        startY = (pos[0][1] < screen.sh / 2) ? (-pos[0][1]) : (screen.sh + pos[0][1]);
     }
+    else {
+        let A = { x: pos[0][0], y: pos[0][1] }, B = { x: pos[1][0], y: pos[1][1] }
+    }
+    pos.unshift([startX, startY]);
+    let enemy = new enemyType[id](pos[0][0], pos[0][1]);
+    enemy.spawnpath.progress.finish = place.length;
+    enemy.spawnpath.places = place;
+    enemy.spawnpath.progress.finish = place.length;
     enemies.push(enemy);
+    console.log(pos);
 }
 
 //Drawing all entities

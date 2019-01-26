@@ -68,3 +68,10 @@ export function playLevel(waves) {
         entities.spawnEnemy(enemy.id, enemy.pos);
     });
 }
+
+
+export var sequence;
+//Playing out the level in order
+export function sequencing() {
+
+}

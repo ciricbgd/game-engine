@@ -66,6 +66,9 @@ export class GameScreenComponent implements OnInit {
         //Collision detection
         collision.collisionDetection();
 
+        //Game sequencing in order (waves, items, spawning etc...)
+        game.sequencing();
+
       }
 
 

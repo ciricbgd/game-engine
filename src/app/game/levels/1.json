@@ -6,10 +6,10 @@
   "waves":
   [
     {
-      "pauseBefore" : 0,
+      "pauseBefore" : 2000,
       "enemies": 
       [
-        {"id":1, "pos": ["a1", "z27"]}
+        {"id":1, "pos": ["G3", "G22"]}
       ],
       "pickups": 
       [
