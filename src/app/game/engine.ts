@@ -56,7 +56,7 @@ export function changeLevel(lvl) {
         },
         success: function (level) {
             playLevel(level.waves);
-            currentLevel.number = lvl;
+            currentLevel.number = level;
         }
     });
 }
@@ -64,7 +64,7 @@ export function changeLevel(lvl) {
 //The timeline and how events play out
 export function playLevel(waves) {
     let wave = waves[0];
-    wave.enemies.forEach(enemy => {
+    wave.enemies.units.forEach(enemy => {
         entities.spawnEnemy(enemy.id, enemy.pos);
     });
 }
