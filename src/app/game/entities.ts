@@ -70,6 +70,11 @@ class Unit extends Entity {
         this.ammo = ammoId;
         this.bulletInstance = new bulletType[ammoId];
     }
+    animation = {
+        "frame": 0,
+        "width": 64,
+        "height": 64,
+    }
 }
 
 //!--------------------- UNIT ---------------------------------------------------------------UNIT-----------------------------------/
@@ -205,6 +210,7 @@ class Enemy extends Unit {
 
         }
     }
+
 }
 
 export class MosquitoBot extends Enemy {
@@ -314,7 +320,6 @@ export function spawnEnemy(id, place) {
     enemy.spawnpath.places = place;
     enemy.spawnpath.progress.finish = place.length;
     enemies.push(enemy);
-    console.log(pos);
 }
 
 //Drawing all entities

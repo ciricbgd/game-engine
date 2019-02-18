@@ -2,21 +2,33 @@
   "title": "Welcome to level 1",
   "background": [],
   "music":"",
-  "bossmusic":"",
+  "status": "not ready",
   "waves":
   [
     {
-      "pauseBefore" : 2000,
-      "pauseAfter":0,
-      "requireClear" : false,
+      "pause" : 2000,
+      "requireClear" : true,
       "enemies": 
-      {
-        "spawnWay": "SameTime",
-        "units" : [{"id":1, "pos": ["U4", "R7"]}]
-      },
+      [
+          {"id":1,"pause":2000, "pos": ["U4", "R7"]},
+          {"id":1,"pos": ["N2", "i10"]}
+      ],
       "pickups": 
       [
-        {"id":1, "pos": "i14", "condition": {}}
+        {"id":1,"pos": "i14", "condition": {}}
+      ]
+    },
+    {
+      "pause" : 2000,
+      "requireClear" : true,
+      "enemies": 
+      [
+          {"id":1,"pause":2000, "pos": ["U4", "R7"]},
+          {"id":1,"pos": ["N2", "i10"]}
+      ],
+      "pickups": 
+      [
+        {"id":1,"pos": "i14", "condition": {}}
       ]
     }
   ]
