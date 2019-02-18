@@ -15,7 +15,7 @@
       ],
       "pickups": 
       [
-        {"id":1,"pos": "i14", "condition": {}}
+        {"id":1,"pos": "i14", "pause": {}}
       ]
     },
     {
