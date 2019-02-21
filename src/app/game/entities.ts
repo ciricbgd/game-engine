@@ -26,6 +26,7 @@ export function init() {
 //--------------------- ENTITIES ---------------------------------------------------------------ENTITIES-----------------------------------/
 
 
+
 class Entity {
     id;
     name; //Name of an entity
@@ -41,15 +42,70 @@ class Entity {
     screen; //Canvas ("layer") where entity is drawn
     accel = 100; //Acceleration of an entity 0-100
     hp; //Health points
+    sprite = new Image();
     draw() {
         this.screen.fillStyle = this.boxColor;
-        this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+        //this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+        this.screen.drawImage(this.sprite, this.animation.x, this.animation.y, this.animation.w, this.animation.h, this.x, this.y, this.w, this.h);
     }
     hurt(dmg) {
         this.hp -= dmg;
     }
     changestatus(status) {
         this.status = status;
+    }
+    animation = {
+        "row": 0,
+        "frame": 0,
+        "framesPerRow": 4,
+        "frameRowPos": 0,
+        "frameCount": 0,
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32,
+        "state": "idle",
+        "states": {
+            "idle": { "startFrame": 1, "endFrame": 16, "startRow": 0, "endRow": 4, "fps": 12 },
+            "death": {}
+        }
+    }
+    animate() {
+        if (this.animation.frameCount > this.animation.states[this.animation.state].fps) {
+            console.log(this.animation.frameRowPos);
+            this.animation.frame++;
+            if (this.animation.frameRowPos >= this.animation.framesPerRow - 1) {
+                if (this.animation.row >= this.animation.states[this.animation.state].endRow - 1) {
+                    this.animation.row = this.animation.states[this.animation.state].startRow - 1;
+                }
+                else {
+                    this.animation.row++;
+                }
+                if (this.animation.row == this.animation.states[this.animation.state].startRow - 1) {
+                    this.animation.frameRowPos = 1;
+                }
+                else {
+                    this.animation.frameRowPos = 0;
+                }
+
+            }
+            else {
+                this.animation.frameRowPos++;
+            }
+            if (this.animation.frame >= this.animation.states[this.animation.state].endFrame) {
+                this.animation.row = this.animation.states[this.animation.state].startRow - 1;
+
+                //this.animation.frameRowPos = this.animation.states[this.animation.state].startFrame - 1;
+                this.animation.frameRowPos = 1;
+
+                this.animation.frame = this.animation.states[this.animation.state].startFrame - 1;
+
+            }
+            this.animation.frameCount = 0;
+        }
+        else this.animation.frameCount++;
+        this.animation.x = this.animation.frameRowPos * this.animation.w;
+        this.animation.y = this.animation.row * this.animation.h;
     }
 }
 
@@ -69,11 +125,6 @@ class Unit extends Entity {
     changeAmmo(ammoId) {
         this.ammo = ammoId;
         this.bulletInstance = new bulletType[ammoId];
-    }
-    animation = {
-        "frame": 0,
-        "width": 64,
-        "height": 64,
     }
 }
 
@@ -227,13 +278,48 @@ export class MosquitoBot extends Enemy {
         this.x = x;
         this.y = y;
         this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/test/girl.png";
+        this.animation.framesPerRow = 4;
+        this.animation.w = 125;
+        this.animation.h = 125;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 16, "startRow": 1, "endRow": 4, "fps": 24, }
+    }
+}
+
+export class Fatty extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 2;
+        this.height = 200;
+        this.h = this.height * screen.sp;
+        this.width = 200;
+        this.w = this.width * screen.sp;
+        this.speed = 2;
+        this.dmg = 40;
+        this.hp = 2400;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/fatty/character.png";
+        this.animation.framesPerRow = 2;
+        this.animation.w = 480;
+        this.animation.h = 480;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 5, "startRow": 1, "endRow": 3, "fps": 12, }
+        this.animation.states.death = { "startFrame": 6, "endFrame": 10, "startRow": 3, "endRow": 5, "fps": 24, }
+        this.animation.state = "death";
+        this.animation.frame = this.animation.states[this.animation.state].startFrame - 1;
+        this.animation.row = this.animation.states[this.animation.state].startRow - 1;
+        this.animation.frameRowPos = 1;
     }
 }
 
 // List of enemy types
 export var enemyType = [
     undefined,//0
-    MosquitoBot//1
+    MosquitoBot,//1
+    Fatty,//2
 ];
 //!--------------------- ENEMIES ---------------------------------------------------------------ENEMIES-----------------------------------/
 
@@ -319,6 +405,7 @@ export function spawnEnemy(id, place) {
     enemy.spawnpath.progress.finish = place.length;
     enemy.spawnpath.places = place;
     enemy.spawnpath.progress.finish = place.length;
+    let a = new Image();
     enemies.push(enemy);
 }
 
@@ -327,6 +414,7 @@ export function drawEntities() {
     //Draw enemies
     for (let i = 0; i < enemies.length; i++) {
         enemies[i].draw();
+        enemies[i].animate();
     }
 
     //Draw friendly bullets

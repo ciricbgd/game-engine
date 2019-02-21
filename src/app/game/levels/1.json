@@ -10,25 +10,11 @@
       "requireClear" : true,
       "enemies": 
       [
-          {"id":1,"pause":2000, "pos": ["U4", "R7"]},
-          {"id":1,"pos": ["N2", "i10"]}
+          {"id":2,"pause":2000, "pos": ["U4", "R7"]}
       ],
       "pickups": 
       [
         {"id":1,"pos": "i14", "pause": {}}
-      ]
-    },
-    {
-      "pause" : 2000,
-      "requireClear" : true,
-      "enemies": 
-      [
-          {"id":1,"pause":2000, "pos": ["U4", "R7"]},
-          {"id":1,"pos": ["N2", "i10"]}
-      ],
-      "pickups": 
-      [
-        {"id":1,"pos": "i14", "condition": {}}
       ]
     }
   ]
