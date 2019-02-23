@@ -66,13 +66,13 @@ class Entity {
         "h": 32,
         "state": "idle",
         "states": {
-            "idle": { "startFrame": 1, "endFrame": 16, "startRow": 0, "endRow": 4, "fps": 12 },
-            "death": {}
+            "idle": {}, "death": {}
         }
     }
     animate() {
         if (this.animation.frameCount > this.animation.states[this.animation.state].fps) {
-            console.log(this.animation.frameRowPos);
+            let startFrameRowPos = this.animation.states[this.animation.state].startFrame - (this.animation.states[this.animation.state].startRow * this.animation.framesPerRow - this.animation.framesPerRow) - 1;
+            //console.log(this.animation.frameRowPos);
             this.animation.frame++;
             if (this.animation.frameRowPos >= this.animation.framesPerRow - 1) {
                 if (this.animation.row >= this.animation.states[this.animation.state].endRow - 1) {
@@ -81,11 +81,12 @@ class Entity {
                 else {
                     this.animation.row++;
                 }
-                if (this.animation.row == this.animation.states[this.animation.state].startRow - 1) {
-                    this.animation.frameRowPos = 1;
+                if (this.animation.row > this.animation.states[this.animation.state].startRow - 1) {
+                    this.animation.frameRowPos = 0;
+
                 }
                 else {
-                    this.animation.frameRowPos = 0;
+                    this.animation.frameRowPos = startFrameRowPos;
                 }
 
             }
@@ -94,18 +95,20 @@ class Entity {
             }
             if (this.animation.frame >= this.animation.states[this.animation.state].endFrame) {
                 this.animation.row = this.animation.states[this.animation.state].startRow - 1;
-
-                //this.animation.frameRowPos = this.animation.states[this.animation.state].startFrame - 1;
-                this.animation.frameRowPos = 1;
-
+                this.animation.frameRowPos = startFrameRowPos;
                 this.animation.frame = this.animation.states[this.animation.state].startFrame - 1;
-
             }
             this.animation.frameCount = 0;
         }
         else this.animation.frameCount++;
         this.animation.x = this.animation.frameRowPos * this.animation.w;
         this.animation.y = this.animation.row * this.animation.h;
+    }
+    state(state) {
+        this.animation.state = state;
+        this.animation.frame = this.animation.states[this.animation.state].startFrame - 1;
+        this.animation.row = this.animation.states[this.animation.state].startRow - 1;
+        this.animation.frameRowPos = this.animation.states[this.animation.state].startFrame - (this.animation.states[this.animation.state].startRow * this.animation.framesPerRow - this.animation.framesPerRow) - 1;
     }
 }
 
@@ -291,9 +294,9 @@ export class Fatty extends Enemy {
     constructor(x, y) {
         super();
         this.id = 2;
-        this.height = 200;
+        this.height = 320;
+        this.width = 320;
         this.h = this.height * screen.sp;
-        this.width = 200;
         this.w = this.width * screen.sp;
         this.speed = 2;
         this.dmg = 40;
@@ -302,16 +305,13 @@ export class Fatty extends Enemy {
         this.y = y;
         this.changeAmmo(1);
 
-        this.sprite.src = "../../assets/sprites/enemies/fatty/character.png";
-        this.animation.framesPerRow = 2;
-        this.animation.w = 480;
-        this.animation.h = 480;
-        this.animation.states.idle = { "startFrame": 1, "endFrame": 5, "startRow": 1, "endRow": 3, "fps": 12, }
-        this.animation.states.death = { "startFrame": 6, "endFrame": 10, "startRow": 3, "endRow": 5, "fps": 24, }
-        this.animation.state = "death";
-        this.animation.frame = this.animation.states[this.animation.state].startFrame - 1;
-        this.animation.row = this.animation.states[this.animation.state].startRow - 1;
-        this.animation.frameRowPos = 1;
+        this.sprite.src = "../../assets/sprites/enemies/civava/character.png";
+        this.animation.w = 128;
+        this.animation.h = 128;
+        this.animation.framesPerRow = 3;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 9, "startRow": 1, "endRow": 3, "fps": 60, }
+        this.animation.states.death = { "startFrame": 6, "endFrame": 10, "startRow": 3, "endRow": 5, "fps": 12, }
+        this.state('idle');
     }
 }
 
