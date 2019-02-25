@@ -10,7 +10,7 @@
       "requireClear" : true,
       "enemies": 
       [
-          {"id":2,"pause":2000, "pos": ["U4", "R7"]}
+          {"id":2,"pause":2000, "pos": ["A27", "E21"]}
       ],
       "pickups": 
       [

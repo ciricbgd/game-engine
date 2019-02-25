@@ -1,14 +1,5 @@
 import * as  entities from '../game/entities';
-import { viewAttached } from '@angular/core/src/render3/instructions';
 declare let $: any;
-
-// let htpp;
-// export function changeLevel(lvl) {
-
-//     http.get(`C:/UrosCiric/Razno/zavrsni/src/app/game/levels/${lvl}.json`)
-//         .subscribe(response => { console.log(response) });
-//     console.log(level);
-// }
 
 var clock = new Date();
 export var time = clock.getTime();

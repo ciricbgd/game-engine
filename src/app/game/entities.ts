@@ -367,45 +367,22 @@ export var bulletType = [
 //Spawning enemies
 export function spawnEnemy(id, place) {
     let pos = screen.gridPos(place);
-    let startX, startY;
+    let A = { x: pos[0][0], y: pos[0][1]},C = { x: undefined, y: undefined }
+    //Spawning enemies as a single position for input
     if (pos.length <= 1) {
-        startX = (pos[0][0] < screen.sw / 2) ? (-pos[0][0]) : (screen.sw + pos[0][0]);
-        startY = (pos[0][1] < screen.sh / 2) ? (-pos[0][1]) : (screen.sh + pos[0][1]);
+        C.x = (A.x < screen.sw / 2) ? (-A.x) : (screen.sw + A.x);
+        C.y = (A.y < screen.sh / 2) ? (-A.y) : (screen.sh + A.y);
     }
+    //Spawning enemies with an array of position paths to follow at spawn
     else {
-        let A = { x: pos[0][0], y: pos[0][1], quadrant: undefined }, B = { x: pos[1][0], y: pos[1][1], quadrant: undefined }, C = { x: undefined, y: undefined }
-
-        //Quad1
-        if (A.x > screen.sw / 2 && A.y < screen.sh / 2) {
-            let paramX = A.x, paramY = screen.sh - A.y;
-            if (paramY >= paramX) { C.y = -A.y; A.x >= B.x ? C.x = A.x + (A.x - B.x) : C.x = A.x - (B.x - A.x) }
-            else { C.x = screen.sw + A.x; A.y >= B.y ? C.y = A.y + (A.y - B.y) : C.y = A.y - (B.y - A.y) }
-        }
-        //Quad2
-        else if (A.x < screen.sw / 2 && A.y < screen.sh / 2) {
-            if (A.x >= A.y) { C.y = -A.y; A.x >= B.x ? C.x = A.x + (A.x - B.x) : C.x = A.x - (B.x - A.x) }
-            else { C.x = -A.x; A.y >= B.y ? C.y = A.y + (A.y - B.y) : C.y = A.y - (B.y - A.y) }
-        }
-        //Quad3
-        else if (A.x < screen.sw / 2 && A.y > screen.sh / 2) {
-            let paramX = screen.sw - A.x, paramY = A.y;
-            if (paramX >= paramY) { C.x = -A.x; A.y >= B.y ? C.y = A.y + (A.y - B.y) : C.y = A.y - (B.y - A.y) }
-            else { C.y = screen.sh + A.y; A.x >= B.x ? C.x = A.x + (A.x - B.x) : C.x = A.x - (B.x - A.x) }
-        }
-        //Quad4
-        else if (A.x > screen.sw / 2 && A.y > screen.sh / 2) {
-            if (A.x >= A.y) { C.x = screen.sw + A.x; A.y >= B.y ? C.y = A.y + (A.y - B.y) : C.y = A.y - (B.y - A.y) }
-            else { C.y = screen.sh + A.y; A.x >= B.x ? C.x = A.x + (A.x - B.x) : C.x = A.x - (B.x - A.x) }
-        }
-
-        startX = C.x; startY = C.y;
+        let B = { x: pos[1][0], y: pos[1][1]}
+        C.x = A.x-(B.x-A.x);C.y = A.y-(B.y-A.y);
     }
-    pos.unshift([startX, startY]);
+    pos.unshift([C.x, C.y]);
     let enemy = new enemyType[id](pos[0][0], pos[0][1]);
     enemy.spawnpath.progress.finish = place.length;
     enemy.spawnpath.places = place;
     enemy.spawnpath.progress.finish = place.length;
-    let a = new Image();
     enemies.push(enemy);
 }
 
