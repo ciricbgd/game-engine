@@ -1,14 +1,7 @@
 import * as game from '../game/engine';
 import * as screen from '../game/screen';
 import * as ui from '../game/ui';
-// class Base {
-//     playerScreen;
-//     enemyScreen;
-//     bulletScreen;
-//     sp;//Screen point - used to scale entities
-//     sw;
-//     sh;
-// }
+
 export var player;
 
 
@@ -45,8 +38,8 @@ class Entity {
     sprite = new Image();
     draw() {
         this.screen.fillStyle = this.boxColor;
-        //this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
-        this.screen.drawImage(this.sprite, this.animation.x, this.animation.y, this.animation.w, this.animation.h, this.x, this.y, this.w, this.h);
+        this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp);
+        this.screen.drawImage(this.sprite, this.animation.x, this.animation.y, this.animation.w, this.animation.h, this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp);
     }
     hurt(dmg) {
         this.hp -= dmg;
@@ -243,11 +236,13 @@ class Enemy extends Unit {
         }
     }
     followSpawnPath() {
-        let pointB = { x: undefined, y: undefined, location: screen.gridPos(this.spawnpath.places[this.spawnpath.progress.start]) };
-        pointB.x = pointB.location[0];
-        pointB.y = pointB.location[1];
+        let B = { x: undefined, y: undefined, location: screen.gridPos(this.spawnpath.places[this.spawnpath.progress.start]) };
+        B.x = B.location[0];
+        B.y = B.location[1];
 
-        let difference = { x: Math.abs(pointB.x - this.x), y: Math.abs(pointB.y - this.y) }
+        let difference = { x: Math.abs(B.x - this.x), y: Math.abs(B.y - this.y) }
+
+        let moveSpeed = (screen.sp / 5) * this.speed;
 
         if (this.spawnpath.moveX == undefined) { this.spawnpath.moveX = difference.x / this.spawnpath.speed }
         if (this.spawnpath.moveY == undefined) { this.spawnpath.moveY = difference.y / this.spawnpath.speed }
@@ -257,10 +252,10 @@ class Enemy extends Unit {
             if (this.spawnpath.progress.start == this.spawnpath.progress.finish) { this.status = "idle"; }
         }
         else {
-            if (difference.x >= this.speed && this.x < pointB.x) { this.x += this.spawnpath.moveX }
-            else if (difference.x >= this.speed && this.x > pointB.x) { this.x -= this.spawnpath.moveY }
-            if (difference.y >= this.speed && this.y < pointB.y) { this.y += this.spawnpath.moveY }
-            else if (difference.y >= this.speed && this.y > pointB.y) { this.y -= this.spawnpath.moveY }
+            if (difference.x >= this.speed && this.x < B.x) { this.x += this.spawnpath.moveX * moveSpeed }
+            else if (difference.x >= this.speed && this.x > B.x) { this.x -= this.spawnpath.moveY * moveSpeed }
+            if (difference.y >= this.speed && this.y < B.y) { this.y += this.spawnpath.moveY * moveSpeed }
+            else if (difference.y >= this.speed && this.y > B.y) { this.y -= this.spawnpath.moveY * moveSpeed }
 
         }
     }
@@ -298,7 +293,7 @@ export class Fatty extends Enemy {
         this.width = 320;
         this.h = this.height * screen.sp;
         this.w = this.width * screen.sp;
-        this.speed = 2;
+        this.speed = 10;
         this.dmg = 40;
         this.hp = 2400;
         this.x = x;
@@ -346,10 +341,12 @@ class Bullet extends Entity {
     }
 }
 export class Aicorn extends Bullet {
-    h = 35 * screen.sp;
-    w = 20 * screen.sp;
+    height = 35;
+    width = 20;
+    h = this.height * screen.sp;
+    w = this.width * screen.sp;
     dmg = 15;
-    speed = 10;
+    speed = 10 * screen.sp;
     interval = 200; //interval between shots in ms
 }
 
@@ -367,7 +364,7 @@ export var bulletType = [
 //Spawning enemies
 export function spawnEnemy(id, place) {
     let pos = screen.gridPos(place);
-    let A = { x: pos[0][0], y: pos[0][1]},C = { x: undefined, y: undefined }
+    let A = { x: pos[0][0], y: pos[0][1] }, C = { x: undefined, y: undefined }
     //Spawning enemies as a single position for input
     if (pos.length <= 1) {
         C.x = (A.x < screen.sw / 2) ? (-A.x) : (screen.sw + A.x);
@@ -375,8 +372,9 @@ export function spawnEnemy(id, place) {
     }
     //Spawning enemies with an array of position paths to follow at spawn
     else {
-        let B = { x: pos[1][0], y: pos[1][1]}
-        C.x = A.x-(B.x-A.x);C.y = A.y-(B.y-A.y);
+        let B = { x: pos[1][0], y: pos[1][1] }
+        C.x = A.x - (B.x - A.x);
+        C.y = A.y - (B.y - A.y);
     }
     pos.unshift([C.x, C.y]);
     let enemy = new enemyType[id](pos[0][0], pos[0][1]);
