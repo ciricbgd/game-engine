@@ -38,8 +38,10 @@ class Entity {
     sprite = new Image();
     draw() {
         this.screen.fillStyle = this.boxColor;
-        this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp);
-        this.screen.drawImage(this.sprite, this.animation.x, this.animation.y, this.animation.w, this.animation.h, this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp);
+        if (this.sprite.src != '') {
+            this.screen.drawImage(this.sprite, this.animation.x, this.animation.y, this.animation.w, this.animation.h, this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp);
+        }
+        else { this.screen.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.width * screen.sp, this.height * screen.sp); }
     }
     hurt(dmg) {
         this.hp -= dmg;
@@ -63,9 +65,8 @@ class Entity {
         }
     }
     animate() {
-        if (this.animation.frameCount > this.animation.states[this.animation.state].fps) {
+        if (this.animation.frameCount > 60 / this.animation.states[this.animation.state].fps) {
             let startFrameRowPos = this.animation.states[this.animation.state].startFrame - (this.animation.states[this.animation.state].startRow * this.animation.framesPerRow - this.animation.framesPerRow) - 1;
-            //console.log(this.animation.frameRowPos);
             this.animation.frame++;
             if (this.animation.frameRowPos >= this.animation.framesPerRow - 1) {
                 if (this.animation.row >= this.animation.states[this.animation.state].endRow - 1) {
@@ -147,7 +148,7 @@ export class Player extends Unit {
         this.speed = 20 * screen.sp;
         this.draw();
         this.changeAmmo(1);
-        this.shootAllowed = true;
+        this.shootAllowed = false;
     }
     hurt(dmg) {
         let clock = new Date();
@@ -215,6 +216,7 @@ class Enemy extends Unit {
         this.y = y;
         this.status = "spawning";
         this.spawnpath.speed = screen.sp * 110;
+        this.shootAllowed = true;
     }
     die(i) {
         enemies.splice(i, 1);
@@ -266,22 +268,138 @@ export class MosquitoBot extends Enemy {
     constructor(x, y) {
         super();
         this.id = 1;
-        this.height = 120;
+        this.height = 100;
         this.h = this.height * screen.sp;
-        this.width = 80;
+        this.width = 87;
         this.w = this.width * screen.sp;
         this.speed = 5;
-        this.dmg = 20;
-        this.hp = 100;
+        this.dmg = 10;
+        this.hp = 75;
         this.x = x;
         this.y = y;
         this.changeAmmo(1);
 
-        this.sprite.src = "../../assets/sprites/test/girl.png";
-        this.animation.framesPerRow = 4;
-        this.animation.w = 125;
-        this.animation.h = 125;
-        this.animation.states.idle = { "startFrame": 1, "endFrame": 16, "startRow": 1, "endRow": 4, "fps": 24, }
+        this.sprite.src = "../../assets/sprites/enemies/mosquito/character.png";
+        this.animation.framesPerRow = 2;
+        this.animation.w = 49;
+        this.animation.h = 56;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 2, "startRow": 1, "endRow": 1, "fps": 24, }
+    }
+}
+
+export class FlyBot extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 1;
+        this.height = 62;
+        this.h = this.height * screen.sp;
+        this.width = 68;
+        this.w = this.width * screen.sp;
+        this.speed = 5;
+        this.dmg = 10;
+        this.hp = 75;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/fly/character.png";
+        this.animation.framesPerRow = 1;
+        this.animation.w = 34;
+        this.animation.h = 31;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 2, "startRow": 1, "endRow": 2, "fps": 16, }
+    }
+}
+
+export class BeeBot extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 1;
+        this.height = 62;
+        this.h = this.height * screen.sp;
+        this.width = 68;
+        this.w = this.width * screen.sp;
+        this.speed = 25;
+        this.dmg = 10;
+        this.hp = 75;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(2);
+
+        this.sprite.src = "../../assets/sprites/enemies/fly/character.png";
+        this.animation.framesPerRow = 1;
+        this.animation.w = 34;
+        this.animation.h = 31;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 2, "startRow": 1, "endRow": 2, "fps": 16, }
+    }
+}
+
+export class RoachBot extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 1;
+        this.height = 100;
+        this.h = this.height * screen.sp;
+        this.width = 88;
+        this.w = this.width * screen.sp;
+        this.speed = 5;
+        this.dmg = 10;
+        this.hp = 75;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/roach/character.png";
+        this.animation.framesPerRow = 3;
+        this.animation.w = 44;
+        this.animation.h = 50;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 7, "startRow": 1, "endRow": 3, "fps": 16, }
+    }
+}
+
+export class BulletAnt extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 1;
+        this.height = 90;
+        this.h = this.height * screen.sp;
+        this.width = 74;
+        this.w = this.width * screen.sp;
+        this.speed = 5;
+        this.dmg = 10;
+        this.hp = 75;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/bulletant/character.png";
+        this.animation.framesPerRow = 2;
+        this.animation.w = 37;
+        this.animation.h = 45;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 4, "startRow": 1, "endRow": 2, "fps": 16, }
+    }
+}
+
+export class Civava extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 2;
+        this.height = 320;
+        this.width = 320;
+        this.h = this.height * screen.sp;
+        this.w = this.width * screen.sp;
+        this.speed = 10;
+        this.dmg = 40;
+        this.hp = 2400;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/civava/character.png";
+        this.animation.w = 128;
+        this.animation.h = 128;
+        this.animation.framesPerRow = 3;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 9, "startRow": 1, "endRow": 3, "fps": 12, }
+        this.state('idle');
     }
 }
 
@@ -305,7 +423,30 @@ export class Fatty extends Enemy {
         this.animation.h = 128;
         this.animation.framesPerRow = 3;
         this.animation.states.idle = { "startFrame": 1, "endFrame": 9, "startRow": 1, "endRow": 3, "fps": 60, }
-        this.animation.states.death = { "startFrame": 6, "endFrame": 10, "startRow": 3, "endRow": 5, "fps": 12, }
+        this.state('idle');
+    }
+}
+
+export class CrowBoss extends Enemy {
+    constructor(x, y) {
+        super();
+        this.id = 2;
+        this.height = 310;
+        this.width = 516;
+        this.h = this.height * screen.sp;
+        this.w = this.width * screen.sp;
+        this.speed = 10;
+        this.dmg = 40;
+        this.hp = 2400;
+        this.x = x;
+        this.y = y;
+        this.changeAmmo(1);
+
+        this.sprite.src = "../../assets/sprites/enemies/crow/character.png";
+        this.animation.w = 258;
+        this.animation.h = 155;
+        this.animation.framesPerRow = 1;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
         this.state('idle');
     }
 }
@@ -314,7 +455,11 @@ export class Fatty extends Enemy {
 export var enemyType = [
     undefined,//0
     MosquitoBot,//1
-    Fatty,//2
+    FlyBot,//2
+    BeeBot,//3
+    RoachBot,//4
+    BulletAnt,//5
+    CrowBoss, //6
 ];
 //!--------------------- ENEMIES ---------------------------------------------------------------ENEMIES-----------------------------------/
 
@@ -350,9 +495,20 @@ export class Aicorn extends Bullet {
     interval = 200; //interval between shots in ms
 }
 
+export class Stinger extends Bullet {
+    height = 35;
+    width = 20;
+    h = this.height * screen.sp;
+    w = this.width * screen.sp;
+    dmg = 15;
+    speed = 10 * screen.sp;
+    interval = 1200; //interval between shots in ms
+}
+
 export var bulletType = [
     undefined,//0
-    Aicorn//1
+    Aicorn,//1
+    Stinger,//2
 ];
 
 //!--------------------- BULLETS ---------------------------------------------------------------BULLETS-----------------------------------/

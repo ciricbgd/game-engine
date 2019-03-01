@@ -38,6 +38,8 @@ export class GameScreenComponent implements OnInit {
     entities.init();
     controls;
 
+
+
     game.changeLevel(1);
 
     function frameChange()//Detects changes on every frame 
