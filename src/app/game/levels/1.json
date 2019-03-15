@@ -1,7 +1,9 @@
 {
   "title": "Level 1",
   "subtitle": "Get ready!",
-  "background": [],
+  "background": [
+    {"src" : "purplesky.png", "speed": 2, "height": 650, "width":400}
+  ],
   "music":"",
   "status": "not ready",
   "waves":

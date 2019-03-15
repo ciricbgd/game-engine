@@ -26,9 +26,11 @@ export class GameScreenComponent implements OnInit {
       document.querySelector("#playerScreen"),
       document.querySelector("#bulletScreen"),
       document.querySelector("#enemyScreen"),
-      document.querySelector("#background"),
       document.querySelector("#left-side"),
-      document.querySelector("#right-side")
+      document.querySelector("#right-side"),
+      document.querySelector("#background-0"),
+      document.querySelector("#background-1"),
+      document.querySelector("#background-2"),
     );
     ui.init(
       document.getElementById('statHp'),
@@ -67,6 +69,11 @@ export class GameScreenComponent implements OnInit {
 
         //Collision detection
         collision.collisionDetection();
+
+        //Move background
+        screen.moveBackground(screen.bg.layer0);
+        //screen.moveBackground(screen.bg.layer1);
+        //screen.moveBackground(screen.bg.layer2);
 
         //Game sequencing in order (waves, items, spawning etc...)
         game.playLevel(game.currentLevel);

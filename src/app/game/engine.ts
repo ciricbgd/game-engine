@@ -1,5 +1,6 @@
-import * as  entities from '../game/entities';
-import * as ui from '../game/ui';
+import * as  entities from './entities';
+import * as ui from './ui';
+import { bg, setBackground } from './screen';
 
 declare let $: any;
 
@@ -39,6 +40,7 @@ export class Level {
     music;
     waves;
     subtitle;
+    bg0; bg1; bg2;
     constructor(lvl: any) {
         this.number = lvl.number
         this.progress = 0;
@@ -46,6 +48,13 @@ export class Level {
         this.subtitle = lvl.subtitle;
         this.background = lvl.background;
         this.music = lvl.music;
+        //setting screen background
+        this.bg0 = lvl.background[0];
+        this.bg1 = lvl.background[1];
+        this.bg2 = lvl.background[2];
+        setBackground(this.bg0, this.bg1, this.bg2);
+        //bg.layer0.
+        //!setting screen background
         lvl.waves.forEach(wave => {
             wave.pauseBeforeSet = false;
             wave.pauseAfterSet = false;
