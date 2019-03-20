@@ -2,7 +2,8 @@
   "title": "Level 1",
   "subtitle": "Get ready!",
   "background": [
-    {"src" : "purplesky.png", "speed": 2, "height": 650, "width":400}
+    {"src" : "purplesky.png", "speed": 6, "height": 650, "width":400},
+    {"src" : "elem2.png", "speed": 3, "height": 100, "width": 300, "size":50, "margin":0, "place": "right", "delay": 0}
   ],
   "music":"",
   "status": "not ready",

@@ -5,6 +5,7 @@ import * as collision from '../game/collision';
 import * as game from '../game/engine';
 import * as screen from '../game/screen';
 import * as ui from '../game/ui';
+import * as sound from '../game/sound';
 
 declare let $: any;
 
@@ -39,8 +40,7 @@ export class GameScreenComponent implements OnInit {
     );
     entities.init();
     controls;
-
-
+    sound;
 
     game.changeLevel(1);
 
@@ -71,9 +71,7 @@ export class GameScreenComponent implements OnInit {
         collision.collisionDetection();
 
         //Move background
-        screen.moveBackground(screen.bg.layer0);
-        //screen.moveBackground(screen.bg.layer1);
-        //screen.moveBackground(screen.bg.layer2);
+        screen.moveBackground([screen.bg.layer0, screen.bg.layer1]);
 
         //Game sequencing in order (waves, items, spawning etc...)
         game.playLevel(game.currentLevel);

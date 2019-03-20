@@ -140,19 +140,37 @@ canvas {
 }
 
 #backgrounds {
-  width: 100%;
+  width: 100vmin;
   height: 100vmin;
   margin: 0 auto;
-  position: absolute;
   z-index: 0;
   display: flex;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-#background-0 {
+#backgrounds>* {
   width: 100vmin;
   height: 100%;
   background-repeat: repeat-y;
   background-position: 0px 0px;
+  position: absolute;
   background-size: 100vmin;
+  overflow: hidden;
+}
+
+#background-0 {
+  z-index: 1;
+}
+
+#background-1 {
+  z-index: 2;
+  background-repeat: no-repeat !important;
+  background-size: 100% auto !important;
+  height: 100vmin;
+}
+
+#background-2 {
+  z-index: 3;
 }

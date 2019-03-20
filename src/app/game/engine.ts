@@ -1,6 +1,7 @@
 import * as  entities from './entities';
 import * as ui from './ui';
 import { bg, setBackground } from './screen';
+import { sound } from './sound';
 
 declare let $: any;
 
@@ -52,7 +53,7 @@ export class Level {
         this.bg0 = lvl.background[0];
         this.bg1 = lvl.background[1];
         this.bg2 = lvl.background[2];
-        setBackground(this.bg0, this.bg1, this.bg2);
+        setBackground([this.bg0, this.bg1, this.bg2]);
         //bg.layer0.
         //!setting screen background
         lvl.waves.forEach(wave => {

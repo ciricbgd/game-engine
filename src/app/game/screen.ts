@@ -156,21 +156,50 @@ export function gridPos(place: any) {
 
 // ------------ Background --------------------
 export var bg = {
-    layer0: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0 },
-    layer1: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0 },
-    layer2: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0 },
+    layer0: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0, delay: 0, },
+    layer1: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0, delay: 0, },
+    layer2: { obj: undefined, speed: 0, height: undefined, width: undefined, pos: 0, delay: 0, },
+    layer(num) {
+        switch (num) {
+            case 0: return bg.layer0;
+            case 1: return bg.layer1;
+            case 2: return bg.layer2;
+        }
+    }
 }
 
-export function setBackground(bg0, bg1, bg2) {
-    if (bg0 != null) { bg.layer0.obj.style.backgroundImage = "url('../../assets/sprites/maps/" + bg0.src + "')"; bg.layer0.speed = bg0.speed; bg.layer0.height = bg0.height; bg.layer0.width = bg0.width; }
-    if (bg1 != null) { bg.layer1.obj.style.backgroundImage = "url('../../assets/sprites/maps/" + bg1.src + "')"; bg.layer1.speed = bg1.speed; bg.layer1.height = bg1.height; bg.layer1.width = bg1.width; }
-    if (bg2 != null) { bg.layer0.obj.style.backgroundImage = "url('../../assets/sprites/maps/" + bg2.src + "')"; bg.layer2.speed = bg2.speed; bg.layer2.height = bg2.height; bg.layer2.width = bg2.width; }
+export function setBackground(bgLayer) {
+    bgLayer.forEach((bcg, i) => {
+        if (bcg != null) {
+            bg.layer(i).obj.style.backgroundImage = "url('../../assets/sprites/maps/" + bcg.src + "')";
+            bg.layer(i).speed = bcg.speed;
+            bg.layer(i).height = bcg.height;
+            bg.layer(i).width = bcg.width;
+            bg.layer(i).delay = bcg.delay
+            if (i > 0) {
+                bg.layer(i).obj.style.width = bcg.size + '%';
+                bcg.margin == undefined ? bcg.margin = 0 : bcg.margin;
+                switch (bcg.place) {
+                    case 'left': bg.layer(i).obj.style.left = bcg.margin + '%'; break;
+                    case 'right': bg.layer(i).obj.style.right = bcg.margin + '%'; break;
+                }
+
+            }
+        }
+    });
 }
 
-export function moveBackground(bcg) {
-    bcg.obj.style.backgroundPosition = '0px ' + bcg.pos + 'px';
-    let speed = sp * bcg.speed,
-        height = (bcg.height * bg.layer0.obj.offsetHeight) / bcg.width;
-    if (bcg.pos >= height) { bcg.pos = speed - (height - bcg.pos); } else { bcg.pos += speed; }
+export function moveBackground(bgLayer) {
+    bgLayer.forEach((bcg, i) => {
+        bcg.obj.style.backgroundPosition = '0px ' + bcg.pos + 'px';
+        let speed = sp * bcg.speed;
+        if (i == 0) {
+            let height = (bcg.height * bg.layer0.obj.offsetHeight) / bcg.width;
+            if (bcg.pos >= height) { bcg.pos = speed - (height - bcg.pos); } else { bcg.pos += speed; }
+        }
+        else {
+            if (bcg.pos >= bg.layer0.obj.offsetHeight) { bcg.pos = - bcg.height - bcg.delay } else { bcg.pos += speed; }
+        }
+    });
 }
 
