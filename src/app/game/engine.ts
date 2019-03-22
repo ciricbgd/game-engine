@@ -1,7 +1,7 @@
 import * as  entities from './entities';
 import * as ui from './ui';
 import { bg, setBackground } from './screen';
-import { sound } from './sound';
+import { BgMusic } from './sound';
 
 declare let $: any;
 
@@ -25,12 +25,19 @@ export function togglePause(pauseButton) {
 }
 
 
+// Music plays if user is active
 export function checkGameStatus() {
     if (status == 'paused') {
         //The game is paused
 
     }
 }
+document.addEventListener('mouseover', function () {
+    if (!userActive) { userActive = true; BgMusic.play(); }
+})
+//! Music plays if user is active
+
+export var userActive = false;
 
 //The class of a current level
 export class Level {
@@ -48,13 +55,12 @@ export class Level {
         this.title = lvl.title;
         this.subtitle = lvl.subtitle;
         this.background = lvl.background;
-        this.music = lvl.music;
+        this.music = '../../assets/sound/background/' + lvl.music;
         //setting screen background
         this.bg0 = lvl.background[0];
         this.bg1 = lvl.background[1];
         this.bg2 = lvl.background[2];
         setBackground([this.bg0, this.bg1, this.bg2]);
-        //bg.layer0.
         //!setting screen background
         lvl.waves.forEach(wave => {
             wave.pauseBeforeSet = false;
@@ -81,7 +87,6 @@ export class Level {
             });
         });
         this.waves = lvl.waves;
-
     }
 }
 
@@ -98,7 +103,18 @@ export function changeLevel(lvlnum) {
         success: function (level) {
             level.number = lvlnum;
             currentLevel = new Level(level);
-            currentLevel.status = "ready"
+            currentLevel.status = "ready";
+
+            let loadMusic = new Promise(function (resolve, reject) {
+                BgMusic.src(currentLevel.music);
+
+                let musicLoaded = true;
+                if (musicLoaded) { resolve(true); } else { reject(false); }
+            });
+
+            loadMusic.then(function () {
+                BgMusic.play();
+            });
         }
     });
 }

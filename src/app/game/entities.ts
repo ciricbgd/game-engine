@@ -1,6 +1,7 @@
 import * as game from '../game/engine';
 import * as screen from '../game/screen';
 import * as ui from '../game/ui';
+import { sound } from './sound';
 
 export var player;
 
@@ -36,6 +37,9 @@ class Entity {
     accel = 100; //Acceleration of an entity 0-100
     hp; //Health points
     sprite = new Image();
+    sound = {
+        "death": { play() { console.log(`Death sound missing`) } }
+    }
     draw() {
         this.screen.fillStyle = this.boxColor;
         if (this.sprite.src != '') {
@@ -183,6 +187,7 @@ export class Player extends Unit {
         }
     }
     die() {
+        this.sound.death.play();
         console.log('Game Over');
     }
 }
@@ -217,9 +222,11 @@ class Enemy extends Unit {
         this.status = "spawning";
         this.spawnpath.speed = screen.sp * 110;
         this.shootAllowed = true;
+        //this.sound.death = new sound("../../assets/sound/fx/wilhelmscream.wav");
     }
     die(i) {
         enemies.splice(i, 1);
+        this.sound.death.play();
     }
     hurt(dmg) {
         this.hp -= dmg;
@@ -313,7 +320,7 @@ export class FlyBot extends Enemy {
 export class BeeBot extends Enemy {
     constructor(x, y) {
         super();
-        this.id = 1;
+        this.id = 3;
         this.height = 62;
         this.h = this.height * screen.sp;
         this.width = 68;

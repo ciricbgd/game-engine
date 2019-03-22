@@ -1,33 +1,24 @@
-function sound(src?) {
+import { userActive } from './engine';
+
+export function sound(src?) {
     this.sound = document.createElement("audio");
-    this.sound.src = '';
+    src == undefined ? this.sound.src = '' : this.sound.src = src;
     this.sound.setAttribute("preload", "auto");
     this.sound.setAttribute("controls", "none");
     this.sound.style.display = "none";
     document.body.appendChild(this.sound);
     this.src = function (src) {
-        this.sound.src = 'src';
+        this.sound.src = src;
     }
     this.play = function () {
-        this.sound.play();
+        if (userActive) { this.sound.play(); }
     }
     this.stop = function () {
         this.sound.pause();
     }
 }
 
-// export var BgMusic = new sound();
-// BgMusic.play();
+//Background music
+export var BgMusic = new sound();
 
 
-
-import { Component, OnInit } from '@angular/core';
-
-export class Sound implements OnInit {
-
-    ngOnInit() {
-
-        console.log('a');
-
-    }
-}
