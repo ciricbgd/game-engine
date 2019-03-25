@@ -11,7 +11,8 @@ export function init(hpBarParam, gameScreenParam, pauseScreenParam) {
 }
 
 export function updateHp(hp) {
-    hpBar.innerHTML = hp;
+    hpBar.style.width = hp + '%';
+    console.log(hp);
 }
 
 

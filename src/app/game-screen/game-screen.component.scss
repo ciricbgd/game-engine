@@ -14,6 +14,7 @@
   /* Standard */
   margin: 0;
   padding: 0;
+  image-rendering: pixelated;
 }
 
 canvas {
@@ -32,23 +33,51 @@ canvas {
   height: 100%;
 }
 
-#hud {
-  color: white;
-  position: absolute;
-  height: 100%;
+#hud-container {
   width: 100%;
-  font-size: 2rem;
+  display: flex;
+  position: absolute;
+  justify-content: center;
   z-index: 2;
 
-  #stats {
-    padding: 20px;
-    position: absolute;
-    bottom: 0;
+  #hud {
+    color: white;
+    height: 100vmin;
+    width: 100vmin;
+    font-size: 2rem;
 
-    #hp {
-      #statHp {
-        color: inherit;
-        background-color: inherit;
+    #stats {
+      padding: 3vmin;
+      position: absolute;
+      bottom: 0;
+
+      #heart-container {
+        width: 18vmin;
+        height: 5.25vmin;
+        background-image: url('../../assets/ui/heart.png');
+        background-repeat: repeat-x;
+        background-position-x: 0px;
+        background-position-y: -5.63vmin;
+        background-size: auto 200%;
+
+        #fullheart {
+          height: 100%;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0%;
+          background-image: url('../../assets/ui/heart.png');
+          background-repeat: repeat-x;
+          background-position-x: 0px;
+          background-position-y: 0px;
+          background-size: auto 200%;
+        }
+      }
+
+      #hp {
+        #statHp {
+          color: inherit;
+          background-color: inherit;
+        }
       }
     }
   }

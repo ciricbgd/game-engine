@@ -34,7 +34,7 @@ export class GameScreenComponent implements OnInit {
       document.querySelector("#background-2"),
     );
     ui.init(
-      document.getElementById('statHp'),
+      document.getElementById('fullheart'),
       document.getElementById("game-screen"),
       document.getElementById("pauseScreen")
     );
