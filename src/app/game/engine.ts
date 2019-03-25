@@ -1,5 +1,5 @@
-import * as  entities from './entities';
-import * as ui from './ui';
+import { spawnEnemy, enemies } from './entities';
+import { displayTitle, titleDisplayed } from './ui';
 import { bg, setBackground } from './screen';
 import { BgMusic } from './sound';
 
@@ -124,7 +124,7 @@ export function changeLevel(lvlnum) {
 //The timeline and how events play out
 export function playLevel(lvl) {
     if (lvl != undefined && lvl.status == "ready") {
-        if (ui.titleDisplayed) {
+        if (titleDisplayed) {
 
             let wave = lvl.waves[lvl.progress];
             //--------Spawning enemies -------------
@@ -133,13 +133,13 @@ export function playLevel(lvl) {
                 if (!enemy.initiated) {
                     if (i == 0) {
                         enemy.initiated = true;
-                        entities.spawnEnemy(enemy.id, enemy.pos);
+                        spawnEnemy(enemy.id, enemy.pos);
                         enemy.pauseTime = time + enemy.pause;
                     }
                     else if (wave.enemies[i - 1].pauseClear) {
                         enemy.initiated = true;
                         enemy.pauseClear = true;
-                        entities.spawnEnemy(enemy.id, enemy.pos);
+                        spawnEnemy(enemy.id, enemy.pos);
                         if (enemy.pause == undefined) enemy.pauseTime = time + enemy.pause;
                     }
                     else {
@@ -154,7 +154,7 @@ export function playLevel(lvl) {
             });
             //!--------Spawning enemies -------------
             //--------Checking if wave is cleared -------------
-            if (wave.cleared == false && enemiesleft <= 0 && entities.enemies.length < 1) {
+            if (wave.cleared == false && enemiesleft <= 0 && enemies.length < 1) {
                 wave.cleared = true
                 //--------Setting pause after a wave --------------
                 if (!wave.pauseSet) {
@@ -176,7 +176,7 @@ export function playLevel(lvl) {
         else {
             //---------Displaying title -------------
 
-            ui.displayTitle(lvl.title, lvl.subtitle);
+            displayTitle(lvl.title, lvl.subtitle);
             //!--------Displaying title -------------
         }
     }

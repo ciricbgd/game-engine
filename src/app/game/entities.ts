@@ -1,6 +1,6 @@
-import * as game from '../game/engine';
+import { time, delayTime } from './engine';
 import * as screen from '../game/screen';
-import * as ui from '../game/ui';
+import { updateHp } from './ui';
 import { sound } from './sound';
 
 export var player;
@@ -160,7 +160,7 @@ export class Player extends Unit {
         if (this.inv == null) {
             this.inv = clock.getTime() + 500//Time in ms of invulnerability;
             this.hp -= dmg;
-            ui.updateHp(this.hp);
+            updateHp(this.hp);
         }
         else if (this.inv != null && time > this.inv) {
             this.inv = null;
@@ -175,13 +175,13 @@ export class Player extends Unit {
     }
     shoot() {
         if (this.shootAllowed) {
-            if (this.shootWait == null || this.shootWait == undefined || game.time >= this.shootWait) {
+            if (this.shootWait == null || this.shootWait == undefined || time >= this.shootWait) {
                 if (this.ammo != null || this.ammo != undefined) {
                     let x = this.x;
                     let y = this.y - this.h / 2 - this.bulletInstance.h / 2;
                     let attack = new bulletType[this.ammo](x, y);
                     friendlyAttacks.push(attack);
-                    this.shootWait = game.delayTime(attack.interval);//Interval between shots
+                    this.shootWait = delayTime(attack.interval);//Interval between shots
                 }
             }
         }
@@ -233,13 +233,13 @@ class Enemy extends Unit {
     }
     shoot() {
         if (this.shootAllowed) {
-            if (this.shootWait == null || this.shootWait == undefined || game.time >= this.shootWait) {
+            if (this.shootWait == null || this.shootWait == undefined || time >= this.shootWait) {
                 if (this.ammo != null || this.ammo != undefined) {
                     let x = this.x;
                     let y = this.y + this.h / 2 + this.bulletInstance.h / 2;
                     let attack = new bulletType[this.ammo](x, y);
                     enemyAttacks.push(attack);
-                    this.shootWait = game.delayTime(attack.interval);//Interval between shots
+                    this.shootWait = delayTime(attack.interval);//Interval between shots
                 }
             }
         }

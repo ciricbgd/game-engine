@@ -1,4 +1,4 @@
-import * as  entities from '../game/entities';
+import { player, enemies, friendlyAttacks, enemyAttacks } from './entities';
 
 export function collides(entity1, entity2) {
     if (entity1 == null || entity1 == undefined || entity2 == null || entity2 == undefined) {
@@ -18,28 +18,28 @@ export function collides(entity1, entity2) {
 
 export function collisionDetection() {
     //For every enemy
-    for (let j = 0; j < entities.enemies.length; j++) {
+    for (let j = 0; j < enemies.length; j++) {
         //If player hits enemy
-        if (collides(entities.player, entities.enemies[j])) {
-            entities.player.hurt(entities.enemies[j].dmg);
+        if (collides(player, enemies[j])) {
+            player.hurt(enemies[j].dmg);
         }
         //For every friendly bullet
-        for (let i = 0; i < entities.friendlyAttacks.length; i++) {
+        for (let i = 0; i < friendlyAttacks.length; i++) {
             //If bullet hits enemy
-            if (collides(entities.friendlyAttacks[i], entities.enemies[j])) {
-                entities.enemies[j].hurt(entities.friendlyAttacks[i].dmg); // Enemy hurt  
+            if (collides(friendlyAttacks[i], enemies[j])) {
+                enemies[j].hurt(friendlyAttacks[i].dmg); // Enemy hurt  
                 //If enemy hp is lower than 0
-                if (entities.enemies[j].hp <= 0) { entities.enemies[j].die(j); }
-                entities.friendlyAttacks[i].die(i); //Bullet death
+                if (enemies[j].hp <= 0) { enemies[j].die(j); }
+                friendlyAttacks[i].die(i); //Bullet death
             }
         }
 
         //For every enemy bullet
-        for (let i = 0; i < entities.enemyAttacks.length; i++) {
+        for (let i = 0; i < enemyAttacks.length; i++) {
             //If bullet hits enemy
-            if (collides(entities.enemyAttacks[i], entities.player)) {
-                entities.player.hurt(entities.enemyAttacks[i].dmg); // Player hurt
-                entities.enemyAttacks[i].die(i); //Bullet death
+            if (collides(enemyAttacks[i], player)) {
+                player.hurt(enemyAttacks[i].dmg); // Player hurt
+                enemyAttacks[i].die(i); //Bullet death
             }
         }
     }

@@ -1,6 +1,3 @@
-import * as entities from '../game/entities';
-import { BlockingProxy } from 'blocking-proxy';
-
 export var sw;// Screen width
 export var sh;// Screen height
 export var sp;// Size point - according to screen width
