@@ -1,4 +1,4 @@
-import { time, delayTime } from './engine';
+import { time, delayTime, level } from './engine';
 import * as screen from '../game/screen';
 import { updateHp } from './ui';
 import { sound } from './sound';
@@ -12,7 +12,7 @@ export var enemies = [];//Array of existing enemies
 export var ammo = [];//Array of existing bullets
 export var enemyAttacks = [];//Array of enemy bullets and other attacks
 export var friendlyAttacks = [];//Array of friendly bullets and special attacks
-
+export var pickups = [];//Array of pickups
 export function init() {
     player = new Player();
 }
@@ -522,10 +522,51 @@ export var bulletType = [
 
 
 
+
+//---------------------- PICKUPS ---------------------------------------------------------------PICKUPS-----------------------------------/
+class Pickup extends Entity {
+    constructor(x?: number, y?: number) {
+        super();
+        this.x = x;
+        this.y = y;
+    }
+    die(i) {
+        pickups.splice(i, 1);
+    }
+}
+
+export class Heal extends Pickup {
+    constructor(x, y) {
+        super();
+        this.id = 1;
+        this.height = 200;
+        this.width = 200;
+        this.h = this.height * screen.sp;
+        this.w = this.width * screen.sp;
+        this.speed = level.background.layer0.speed * screen.sp;
+        this.x = x;
+        this.y = y;
+
+        this.sprite.src = "../../assets/sprites/pickups/balloon.png";
+        this.animation.w = 128;
+        this.animation.h = 128;
+        this.animation.framesPerRow = 1;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
+        this.state('idle');
+    }
+}
+
+export var pickupType = [
+    undefined,//0
+    Heal,//1
+];
+//!---------------------- PICKUPS ---------------------------------------------------------------PICKUPS-----------------------------------/
+
 //--------------------- FUNCTIONS ---------------------------------------------------------------FUNCTIONS-----------------------------------/
 
 //Spawning enemies
 export function spawnEnemy(id, place) {
+    console.log('spawn attempted');
     let pos = screen.gridPos(place);
     let A = { x: pos[0][0], y: pos[0][1] }, C = { x: undefined, y: undefined }
     //Spawning enemies as a single position for input
@@ -546,6 +587,15 @@ export function spawnEnemy(id, place) {
     enemy.spawnpath.progress.finish = place.length;
     enemies.push(enemy);
 }
+
+//Spawning pickups
+export function spawnPickup(id, place) {
+    let pos = screen.gridPos(place);
+    let pickup = new pickupType[id](pos[0][0], pos[0][1]);
+    pickups.push(pickup);
+}
+
+//Move everything that moves with the same speed of background
 
 //Drawing all entities
 export function drawEntities() {
@@ -597,5 +647,9 @@ export function moveEnemies() {
     });
 }
 
-
+export function moveStationary() {
+    pickups.forEach((item, i) => {
+        item.y += level.background.layer0.speed * screen.sp;
+    });
+}
 //!--------------------- FUNCTIONS ---------------------------------------------------------------FUNCTIONS-----------------------------------/

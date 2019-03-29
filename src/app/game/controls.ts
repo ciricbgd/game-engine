@@ -5,7 +5,7 @@ import { togglePause } from './engine';
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
 document.addEventListener("mousemove", mouseMoveHandler, false); // Listening to mouse movement
-export var MovementType = 'mouse';
+export var MovementType = 'keyboard';
 
 
 //Mouse movement
@@ -109,8 +109,6 @@ function slowDown(accel) {
 
 export function changeMovement() {
 
-
-
     if (MovementType == 'mouse') {
         //Mouse movement 
         mouseMoveHandler;
@@ -152,7 +150,6 @@ export function changeMovement() {
 
         if (player.accel < 0) { player.accel = 0; }
         if (player.accel > 100) { player.accel = 100; }
-
     }
 
     if (player.x < player.w / 2) { player.x = player.w / 2 }

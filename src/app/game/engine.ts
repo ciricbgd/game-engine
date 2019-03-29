@@ -2,6 +2,7 @@ import { spawnEnemy, enemies } from './entities';
 import { displayTitle, titleDisplayed } from './ui';
 import { bg, setBackground } from './screen';
 import { BgMusic } from './sound';
+import * as debug from './debug';
 
 declare let $: any;
 
@@ -82,9 +83,9 @@ export class Level {
                     enemy.pauseClear = false;
                 }
             });
-            wave.pickups.forEach(pickup => {
-                pickup.initiated = false;
-            });
+            // wave.pickups.forEach(pickup => {
+            //     pickup.initiated = false;
+            // });
         });
         this.waves = lvl.waves;
     }
@@ -128,30 +129,34 @@ export function playLevel(lvl) {
 
             let wave = lvl.waves[lvl.progress];
             //--------Spawning enemies -------------
-            let enemiesleft = wave.enemies.length;
-            wave.enemies.forEach((enemy, i) => {
-                if (!enemy.initiated) {
-                    if (i == 0) {
-                        enemy.initiated = true;
-                        spawnEnemy(enemy.id, enemy.pos);
-                        enemy.pauseTime = time + enemy.pause;
-                    }
-                    else if (wave.enemies[i - 1].pauseClear) {
-                        enemy.initiated = true;
-                        enemy.pauseClear = true;
-                        spawnEnemy(enemy.id, enemy.pos);
-                        if (enemy.pause == undefined) enemy.pauseTime = time + enemy.pause;
-                    }
-                    else {
-                        if (time >= wave.enemies[i - 1].pauseTime) {
-                            wave.enemies[i - 1].pauseClear = true;
+            let enemiesleft;
+            if (enemiesleft > 0) {
+                wave.enemies.forEach((enemy, i) => {
+                    if (!enemy.initiated) {
+                        if (i == 0) {
+                            console.log('spawning enemies');
+                            enemy.initiated = true;
+                            spawnEnemy(enemy.id, enemy.pos);
+                            enemy.pauseTime = time + enemy.pause;
+                        }
+                        else if (wave.enemies[i - 1].pauseClear) {
+                            enemy.initiated = true;
+                            enemy.pauseClear = true;
+                            spawnEnemy(enemy.id, enemy.pos);
+                            if (enemy.pause == undefined) enemy.pauseTime = time + enemy.pause;
+                        }
+                        else {
+                            if (time >= wave.enemies[i - 1].pauseTime) {
+                                wave.enemies[i - 1].pauseClear = true;
+                            }
                         }
                     }
-                }
-                else {
-                    enemiesleft--;
-                }
-            });
+                    else {
+                        enemiesleft--;
+                    }
+                });
+            }
+            else { wave.cleared = true; }
             //!--------Spawning enemies -------------
             //--------Checking if wave is cleared -------------
             if (wave.cleared == false && enemiesleft <= 0 && enemies.length < 1) {
