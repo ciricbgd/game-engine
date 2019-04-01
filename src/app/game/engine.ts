@@ -1,4 +1,4 @@
-import { spawnEnemy, enemies } from './entities';
+import { spawnEnemy, enemies, spawnPickup } from './entities';
 import { displayTitle, titleDisplayed } from './ui';
 import { bg, setBackground } from './screen';
 import { BgMusic } from './sound';
@@ -83,9 +83,10 @@ export class Level {
                     enemy.pauseClear = false;
                 }
             });
-            // wave.pickups.forEach(pickup => {
-            //     pickup.initiated = false;
-            // });
+
+            wave.pickups.forEach(pickup => {
+                pickup.initiated = false;
+            });
         });
         this.waves = lvl.waves;
     }
@@ -129,12 +130,13 @@ export function playLevel(lvl) {
 
             let wave = lvl.waves[lvl.progress];
             //--------Spawning enemies -------------
-            let enemiesleft;
+            let enemiesleft = wave.enemies.length;
+            let pickupsleft = wave.pickups.length;
+
             if (enemiesleft > 0) {
                 wave.enemies.forEach((enemy, i) => {
                     if (!enemy.initiated) {
                         if (i == 0) {
-                            console.log('spawning enemies');
                             enemy.initiated = true;
                             spawnEnemy(enemy.id, enemy.pos);
                             enemy.pauseTime = time + enemy.pause;
@@ -153,6 +155,31 @@ export function playLevel(lvl) {
                     }
                     else {
                         enemiesleft--;
+                    }
+                });
+            }
+            else if (pickupsleft > 0) {
+                wave.pickups.forEach((pickup, i) => {
+                    if (!pickup.initiated) {
+                        if (i == 0) {
+                            pickup.initiated = true;
+                            spawnPickup(pickup.id, pickup.pos);
+                            pickup.pauseTime = time + pickup.puse;
+                        }
+                        else if (wave.pickups[i - 1].pauseClear) {
+                            pickup.initiated = true;
+                            pickup.pauseClear = true;
+                            spawnPickup(pickup.id, pickup.pos);
+                            if (pickup.pause == undefined) pickup.pauseTime = time + pickup.pause;
+                        }
+                        else {
+                            if (time >= wave.pickups[i - 1].pauseTime) {
+                                wave.pickups[i - 1].pauseClear = true;
+                            }
+                        }
+                    }
+                    else {
+                        pickupsleft--;
                     }
                 });
             }

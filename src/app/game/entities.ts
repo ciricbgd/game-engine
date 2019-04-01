@@ -1,4 +1,4 @@
-import { time, delayTime, level } from './engine';
+import { time, delayTime, currentLevel } from './engine';
 import * as screen from '../game/screen';
 import { updateHp } from './ui';
 import { sound } from './sound';
@@ -525,13 +525,39 @@ export var bulletType = [
 
 //---------------------- PICKUPS ---------------------------------------------------------------PICKUPS-----------------------------------/
 class Pickup extends Entity {
+    balloon;
     constructor(x?: number, y?: number) {
         super();
         this.x = x;
         this.y = y;
+        this.screen = screen.playerScreen;
     }
     die(i) {
         pickups.splice(i, 1);
+    }
+    activate(i) {
+        console.log('This pickup does nothing :/');
+        this.die(i);
+    }
+}
+
+export class Balloon extends Entity {
+    constructor(x, y) {
+        super();
+        this.id = 0;
+        this.height = 400;
+        this.width = 400;
+        this.h = this.height * screen.sp;
+        this.w = this.width * screen.sp;
+        this.x = x;
+        this.y = y;
+        this.screen = screen.playerScreen;
+        this.sprite.src = "../../assets/sprites/pickups/balloon.png";
+        this.animation.w = 24;
+        this.animation.h = 24;
+        this.animation.framesPerRow = 1;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
+        this.state('idle');
     }
 }
 
@@ -539,17 +565,16 @@ export class Heal extends Pickup {
     constructor(x, y) {
         super();
         this.id = 1;
-        this.height = 200;
-        this.width = 200;
+        this.height = 100;
+        this.width = 100;
         this.h = this.height * screen.sp;
         this.w = this.width * screen.sp;
-        this.speed = level.background.layer0.speed * screen.sp;
         this.x = x;
         this.y = y;
 
-        this.sprite.src = "../../assets/sprites/pickups/balloon.png";
-        this.animation.w = 128;
-        this.animation.h = 128;
+        //this.sprite.src = "../../assets/sprites/pickups/balloon.png";
+        this.animation.w = 24;
+        this.animation.h = 24;
         this.animation.framesPerRow = 1;
         this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
         this.state('idle');
@@ -566,7 +591,6 @@ export var pickupType = [
 
 //Spawning enemies
 export function spawnEnemy(id, place) {
-    console.log('spawn attempted');
     let pos = screen.gridPos(place);
     let A = { x: pos[0][0], y: pos[0][1] }, C = { x: undefined, y: undefined }
     //Spawning enemies as a single position for input
@@ -591,7 +615,8 @@ export function spawnEnemy(id, place) {
 //Spawning pickups
 export function spawnPickup(id, place) {
     let pos = screen.gridPos(place);
-    let pickup = new pickupType[id](pos[0][0], pos[0][1]);
+    let pickup = new pickupType[id](pos[0], -pos[1]);
+    pickup.balloon = new Balloon(pos[0], -pos[1]);
     pickups.push(pickup);
 }
 
@@ -620,8 +645,16 @@ export function drawEntities() {
     for (let i = 0; i < enemyAttacks.length; i++) {
         enemyAttacks[i].draw(); // Drawing the bullets
         enemyAttacks[i].y += enemyAttacks[i].speed; //Moving the bullets
-        if (enemyAttacks[i].y > screen.sw) { enemyAttacks.splice(i, 1); } //Removing bullets when they get off screen
+        if (enemyAttacks[i].y > screen.sh) { enemyAttacks.splice(i, 1); } //Removing bullets when they get off screen
     }
+
+    //Draw pickups
+    pickups.forEach(pickup => {
+        pickup.draw();
+        pickup.animate();
+        pickup.balloon.draw();
+        pickup.balloon.animate();
+    });
 }
 
 //Update entities on screen resize
@@ -647,9 +680,15 @@ export function moveEnemies() {
     });
 }
 
+//Moving stationary items
 export function moveStationary() {
-    pickups.forEach((item, i) => {
-        item.y += level.background.layer0.speed * screen.sp;
+    let speed = screen.bg.layer0.speed * screen.sp;
+
+    pickups.forEach((pickup, i) => {
+        pickup.y += speed;
+        pickup.balloon.y += speed;
+        //Removing item if it's off screen
+        if (pickup.y - pickup.h > screen.sh) { pickups.splice(i, 1); }
     });
 }
 //!--------------------- FUNCTIONS ---------------------------------------------------------------FUNCTIONS-----------------------------------/

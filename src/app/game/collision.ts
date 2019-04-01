@@ -1,4 +1,4 @@
-import { player, enemies, friendlyAttacks, enemyAttacks } from './entities';
+import { player, enemies, friendlyAttacks, enemyAttacks, pickups } from './entities';
 
 export function collides(entity1, entity2) {
     if (entity1 == null || entity1 == undefined || entity2 == null || entity2 == undefined) {
@@ -41,6 +41,13 @@ export function collisionDetection() {
                 player.hurt(enemyAttacks[i].dmg); // Player hurt
                 enemyAttacks[i].die(i); //Bullet death
             }
+        }
+    }
+    //For every pickup
+    for (let i = 0; i < pickups.length; i++) {
+        //If pickup hits player
+        if (collides(player, pickups[i])) {
+            pickups[i].activate(i);
         }
     }
 }

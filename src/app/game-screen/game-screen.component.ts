@@ -67,6 +67,9 @@ export class GameScreenComponent implements OnInit {
         //Move enemies
         entities.moveEnemies();
 
+        //Move stationary items (move with the speed of background)
+        entities.moveStationary();
+
         //Collision detection
         collision.collisionDetection();
 
@@ -75,7 +78,6 @@ export class GameScreenComponent implements OnInit {
 
         //Game sequencing in order (waves, items, spawning etc...)
         game.playLevel(game.currentLevel);
-
       }
 
 

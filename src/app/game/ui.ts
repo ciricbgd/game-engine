@@ -1,4 +1,5 @@
-import { player } from '../game/entities';
+import { player } from './entities';
+import *  as debug from './debug';
 
 export var hpBar: any;
 var gameScreen: any;
@@ -32,19 +33,25 @@ export var titleDisplayed;
 let titleDisplayProgress = -60;
 let Title, SubTitle, TitleGroup;
 export function displayTitle(title, subtitle) {
-    if (titleDisplayProgress == -60) {
-        TitleGroup = <HTMLElement>document.querySelector("#titlegroup")
-        Title = <HTMLElement>document.querySelector("#titlegroup > #leveltitle");
-        SubTitle = <HTMLElement>document.querySelector("#titlegroup > #levelsubtitle");
-        Title.innerHTML = title;
-        SubTitle.innerHTML = subtitle;
+    if (!debug.skipIntro) {
+        if (titleDisplayProgress == -60) {
+            TitleGroup = <HTMLElement>document.querySelector("#titlegroup")
+            Title = <HTMLElement>document.querySelector("#titlegroup > #leveltitle");
+            SubTitle = <HTMLElement>document.querySelector("#titlegroup > #levelsubtitle");
+            Title.innerHTML = title;
+            SubTitle.innerHTML = subtitle;
+        }
+        else if (titleDisplayProgress >= 380) {
+            titleDisplayed = true;
+            player.shootAllowed = true;
+        }
+        else {
+            TitleGroup.style.marginTop = titleDisplayProgress / 3 + 'vmin';
+        }
+        titleDisplayProgress++;
     }
-    else if (titleDisplayProgress >= 380) {
+    else {
         titleDisplayed = true;
         player.shootAllowed = true;
     }
-    else {
-        TitleGroup.style.marginTop = titleDisplayProgress / 3 + 'vmin';
-    }
-    titleDisplayProgress++;
 }
