@@ -1,4 +1,4 @@
-import { spawnEnemy, enemies, spawnPickup } from './entities';
+import { spawnEnemy, enemies, pickups, spawnPickup } from './entities';
 import { displayTitle, titleDisplayed } from './ui';
 import { bg, setBackground } from './screen';
 import { BgMusic } from './sound';
@@ -50,6 +50,7 @@ export class Level {
     waves;
     subtitle;
     bg0; bg1; bg2;
+    status;
     constructor(lvl: any) {
         this.number = lvl.number
         this.progress = 0;
@@ -64,9 +65,10 @@ export class Level {
         setBackground([this.bg0, this.bg1, this.bg2]);
         //!setting screen background
         lvl.waves.forEach(wave => {
+            wave.cleared = false;
+            wave.requireClear = wave.requireClear != undefined ? true : false;
             wave.pauseBeforeSet = false;
             wave.pauseAfterSet = false;
-            wave.requireClear ? wave.cleared = false : wave.cleared = true;
             if (wave.pause != undefined) {
                 wave.pauseSet = false;
                 wave.pauseClear = false;
@@ -86,9 +88,11 @@ export class Level {
 
             wave.pickups.forEach(pickup => {
                 pickup.initiated = false;
+                if (pickup.pause == undefined) { pickup.pause = 0; }
             });
         });
         this.waves = lvl.waves;
+        this.status = 'ready';
     }
 }
 
@@ -105,7 +109,6 @@ export function changeLevel(lvlnum) {
         success: function (level) {
             level.number = lvlnum;
             currentLevel = new Level(level);
-            currentLevel.status = "ready";
 
             let loadMusic = new Promise(function (resolve, reject) {
                 BgMusic.src(currentLevel.music);
@@ -130,10 +133,8 @@ export function playLevel(lvl) {
 
             let wave = lvl.waves[lvl.progress];
             //--------Spawning enemies -------------
-            let enemiesleft = wave.enemies.length;
-            let pickupsleft = wave.pickups.length;
-
-            if (enemiesleft > 0) {
+            let enemiesToSpawn = wave.enemies.length;
+            if (enemiesToSpawn > 0) {
                 wave.enemies.forEach((enemy, i) => {
                     if (!enemy.initiated) {
                         if (i == 0) {
@@ -154,11 +155,15 @@ export function playLevel(lvl) {
                         }
                     }
                     else {
-                        enemiesleft--;
+                        enemiesToSpawn--;
                     }
                 });
             }
-            else if (pickupsleft > 0) {
+            //!--------Spawning enemies -------------
+
+            //---------Spawning pickups -------------
+            let pickupsToSpawn = wave.pickups.length;
+            if (pickupsToSpawn > 0) {
                 wave.pickups.forEach((pickup, i) => {
                     if (!pickup.initiated) {
                         if (i == 0) {
@@ -179,29 +184,39 @@ export function playLevel(lvl) {
                         }
                     }
                     else {
-                        pickupsleft--;
+                        pickupsToSpawn--;
                     }
                 });
             }
-            else { wave.cleared = true; }
-            //!--------Spawning enemies -------------
+            //!---------Spawning pickups -------------
+
             //--------Checking if wave is cleared -------------
-            if (wave.cleared == false && enemiesleft <= 0 && enemies.length < 1) {
-                wave.cleared = true
-                //--------Setting pause after a wave --------------
-                if (!wave.pauseSet) {
+            let everythingSpawned: boolean = (enemiesToSpawn <= 0 && pickupsToSpawn <= 0) ? true : false;
+            let enemiesKilledIfRequired: boolean = ((wave.requireClear && enemies.length <= 0) || !wave.requireClear) ? true : false;
+
+            if (!wave.pauseSet) {
+                if (everythingSpawned && enemiesKilledIfRequired) {
+                    //--------Setting pause after a wave --------------
                     wave.pauseTime = time + wave.pause;
                     wave.pauseSet = true;
-                }
-                //!--------Setting pause after a wave -------------
-            };
-            if (wave.pauseSet && !wave.pauseClear) {
+                    //!--------Setting pause after a wave -------------
+                };
+            }
+            else if (wave.pauseSet && !wave.pauseClear) {
                 if (time >= wave.pauseTime) {
                     wave.pauseClear = true;
+                    wave.cleared = true;
                 }
             }
-            if (wave.cleared == true && wave.pauseClear && currentLevel.progress < currentLevel.waves.length - 1) {
-                currentLevel.progress++;
+            else if (wave.cleared == true) {
+                if (currentLevel.progress < currentLevel.waves.length - 1) {
+                    //Send in the next wave
+                    currentLevel.progress++;
+                }
+                else {
+                    //Send in the next level
+                    console.log('Time for next level (expect a crash for now)');
+                }
             }
         }
         //!--------Checking if wave is cleared -------------
