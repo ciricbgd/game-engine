@@ -1,14 +1,18 @@
 import { player } from './entities';
 import *  as debug from './debug';
+import { changeLevel, togglePause } from './engine';
+import { skipVideoIntro, skipVideoOutro } from './debug';
 
 export var hpBar: any;
 var gameScreen: any;
 var pauseScreen: any;
 
-export function init(hpBarParam, gameScreenParam, pauseScreenParam) {
+export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement) {
     hpBar = hpBarParam;
     gameScreen = gameScreenParam;
     pauseScreen = pauseScreenParam;
+    theGame = theGameElement;
+    initVideo(videoScreen);
 }
 
 export function updateHp(hp) {
@@ -30,7 +34,7 @@ export function updateUi(gameStatus) {
 }
 
 export var titleDisplayed;
-let titleDisplayProgress = -60;
+export var titleDisplayProgress = -60;
 let Title, SubTitle, TitleGroup;
 export function displayTitle(title, subtitle) {
     if (!debug.skipIntro) {
@@ -53,5 +57,65 @@ export function displayTitle(title, subtitle) {
     else {
         titleDisplayed = true;
         player.shootAllowed = true;
+    }
+}
+
+export function resetTitle() {
+    titleDisplayed = false;
+    titleDisplayProgress = -60;
+}
+
+
+// Intro video
+export var video;
+export var theGame;
+
+function initVideo(videoElement) {
+    video = videoElement;
+
+    video.onended = function () {
+        //After the video ends
+        video.muted = true;
+        video.style.display = "none";
+        theGame.style.display = "block";
+        togglePause("unpaused");
+        changeLevel(1);
+    }
+
+
+    //Play the video
+    if (skipVideoIntro) {
+        video.style.display = "none";
+        togglePause("unpaused");
+        changeLevel(1);
+        theGame.style.display = "block";
+    }
+    else {
+        video.style.display = "block";
+        video.play();
+    }
+}
+
+
+// Outro video
+export var outroVideoExecuted = false;
+
+export function playOutro() {
+    video.src = '../../assets/outro.mp4';
+    theGame.style.display = "none";
+    video.style.display = "block";
+
+    video.onended = function () {
+        //After the video ends
+        alert('You did it 💩');
+    }
+
+    if (skipVideoOutro) {
+        //Debug skipping video outro
+        alert('You did it 💩');
+    }
+    else {
+        video.play();
+        outroVideoExecuted = true;
     }
 }

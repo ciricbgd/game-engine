@@ -36,13 +36,13 @@ export class GameScreenComponent implements OnInit {
     ui.init(
       document.getElementById('fullheart'),
       document.getElementById("game-screen"),
-      document.getElementById("pauseScreen")
+      document.getElementById("pauseScreen"),
+      document.getElementById("videoScreen"),
+      document.getElementById("theGame")
     );
     entities.init();
     controls;
     sound;
-
-    game.changeLevel(1);
 
     function frameChange()//Detects changes on every frame 
     {
@@ -50,7 +50,7 @@ export class GameScreenComponent implements OnInit {
       //Hide mouse cursor
       ui.updateUi(game.status);
 
-      if (game.status != 'paused') {
+      if (game.status != "paused") {
 
         //Update game time
         game.updateTime();

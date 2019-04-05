@@ -1,3 +1,11 @@
 <div id="container">
-  <app-game-screen></app-game-screen>
+  <!-- Intro -->
+  <div id="videoContainer">
+    <video id="videoScreen" muted style="display:none;">
+      <source src="../../assets/intro.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- The effin game -->
+  <app-game-screen id="theGame" style="display:none"></app-game-screen>
 </div>

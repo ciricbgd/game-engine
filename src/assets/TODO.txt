@@ -1,0 +1,2 @@
+1. Show circular dependency warnings and resolve them
+erase projects -> architect -> options - > "showCircularDependencies": false

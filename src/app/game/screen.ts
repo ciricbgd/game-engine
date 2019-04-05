@@ -1,3 +1,5 @@
+import { getEntities } from './entities';
+
 export var sw;// Screen width
 export var sh;// Screen height
 export var sp;// Size point - according to screen width
@@ -78,6 +80,12 @@ function resize() {
     enemyCanvas.width = sw;
     enemyCanvas.height = sh;
     enemyScreen = enemyCanvas.getContext("2d");
+
+    //Update screen point for entities
+
+    getEntities().forEach(entity => {
+        entity.changeSp(sp);
+    });
 
 }
 

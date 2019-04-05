@@ -12,30 +12,17 @@
   "waves":
   [
     {
-      "pause" : 2000,
+      "pause" : 0,
       "requireClear" : true,
       "enemies": 
       [
-        {"id":3,"pause":1000, "pos": ["A14", "B14", "J14"]},
-        {"id":3,"pause":0, "pos": ["A5", "B5", "F5"]},
-        {"id":3, "pos": ["A23","B23", "F23"]}
+        {"id":1,"pause":1000, "pos": ["A14", "B14", "J14"]},
+        {"id":1,"pause":0, "pos": ["A5", "B5", "F5"]},
+        {"id":1, "pos": ["A23","B23", "F23"]}
       ],
       "pickups": 
       [
-        {"id":1,"pos": "g14", "pause":0}
-      ]
-    },
-
-
-    {
-      "pause" : 0,
-      "requireClear" : true,
-      "enemies": [{"id":3,"pause":1000, "pos": ["A14", "B14", "J14"]},
-      {"id":3,"pause":0, "pos": ["A5", "B5", "F5"]},
-      {"id":3, "pos": ["A23","B23", "F23"]}],
-      "pickups": 
-      [
-        {"id":1,"pos": "g14", "pause":0}
+        {"id":2,"pos": "a14", "pause":0}
       ]
     }
 

@@ -1,5 +1,7 @@
-import { spawnEnemy, enemies, pickups, spawnPickup } from './entities';
-import { displayTitle, titleDisplayed } from './ui';
+import { spawnEnemy, spawnPickup } from './entities';
+import { enemies } from './entities/enemies/enemyCollection';
+import { pickups } from './entities/pickups/pickupCollection';
+import { displayTitle, titleDisplayed, resetTitle, playOutro, outroVideoExecuted } from './ui';
 import { bg, setBackground } from './screen';
 import { BgMusic } from './sound';
 import * as debug from './debug';
@@ -19,7 +21,7 @@ export function delayTime(timeMs) {
     return (time + timeMs);
 }
 
-export var status = 'unpaused';
+export var status = "paused";
 
 export function togglePause(pauseButton) {
     status = pauseButton;
@@ -39,6 +41,8 @@ document.addEventListener('mouseover', function () {
 //! Music plays if user is active
 
 export var userActive = false;
+
+export var numberOfLevels = 1;
 
 //The class of a current level
 export class Level {
@@ -109,6 +113,8 @@ export function changeLevel(lvlnum) {
         success: function (level) {
             level.number = lvlnum;
             currentLevel = new Level(level);
+
+            resetTitle();
 
             let loadMusic = new Promise(function (resolve, reject) {
                 BgMusic.src(currentLevel.music);
@@ -215,14 +221,19 @@ export function playLevel(lvl) {
                 }
                 else {
                     //Send in the next level
-                    console.log('Time for next level (expect a crash for now)');
+                    if (currentLevel.number < numberOfLevels) {
+                        changeLevel(currentLevel.number + 1);
+                    }
+                    else {
+                        // Game finished, you win!
+                        if (!outroVideoExecuted) { playOutro(); }
+                    }
                 }
             }
         }
         //!--------Checking if wave is cleared -------------
         else {
             //---------Displaying title -------------
-
             displayTitle(lvl.title, lvl.subtitle);
             //!--------Displaying title -------------
         }
