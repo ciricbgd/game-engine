@@ -18,14 +18,19 @@
   <canvas id="playerScreen" class="layer"></canvas>
   <div class="screen-field-container">
     <div id="screen-field">
+      <div id="pauseScreen" style="display:none;">
+        <p style="display:block;">
+          <p>Game paused</p>
+          <br><br>
+          <p class="gameOptionsButton" id="settingsButton">Settings</p>
+          <p class="gameOptionsButton" id="creditsButton">Credits</p>
+      </div>
+
       <div id="titlegroup">
         <h1 id="leveltitle"></h1>
         <h3 id="levelsubtitle"></h3>
       </div>
     </div>
-  </div>
-  <div id="pauseScreen" style="display:none;">
-    <p style="display:block;"><br><br>Game is paused</p>
   </div>
   <div id="backgrounds">
     <div id="background-2" clas="game-background"></div>

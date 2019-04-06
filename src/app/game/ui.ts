@@ -23,14 +23,14 @@ export function updateHp(hp) {
 
 //Hiding mouse cursor
 export function updateUi(gameStatus) {
-    // if (gameStatus == 'unpaused') {
-    //     gameScreen.style.cursor = 'none';
-    //     pauseScreen.style.display = 'none';
-    // }
-    // else if (gameStatus == 'paused') {
-    //     gameScreen.style.cursor = 'auto';
-    //     pauseScreen.style.display = 'inherit';
-    // }
+    if (gameStatus == 'unpaused') {
+        //gameScreen.style.cursor = 'none';
+        pauseScreen.style.display = 'none';
+    }
+    else if (gameStatus == 'paused') {
+        //gameScreen.style.cursor = 'auto';
+        pauseScreen.style.display = 'inherit';
+    }
 }
 
 export var titleDisplayed;
@@ -108,11 +108,13 @@ export function playOutro() {
     video.onended = function () {
         //After the video ends
         alert('You did it 💩');
+        location.reload();
     }
 
     if (skipVideoOutro) {
         //Debug skipping video outro
         alert('You did it 💩');
+        location.reload();
     }
     else {
         video.play();

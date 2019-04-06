@@ -35,9 +35,6 @@ export class Enemy extends Unit {
         enemies.splice(i, 1);
         this.sound.death.play();
     }
-    hurt(dmg) {
-        this.hp -= dmg;
-    }
     shoot() {
         if (this.shootAllowed) {
             if (this.shootWait == null || this.shootWait == undefined || time >= this.shootWait) {
@@ -45,6 +42,7 @@ export class Enemy extends Unit {
                     let x = this.x;
                     let y = this.y + this.h / 2 + this.bulletInstance.h / 2;
                     let attack = new bulletType[this.ammo](x, y);
+                    attack.type = 'enemy';
                     enemyAttacks.push(attack);
                     this.shootWait = delayTime(attack.interval);//Interval between shots
                 }

@@ -26,7 +26,7 @@ export class Player extends Unit {
         let clock = new Date();
         let time = clock.getTime();
         if (this.inv == null) {
-            this.inv = clock.getTime() + 500//Time in ms of invulnerability;
+            this.inv = clock.getTime() + 1000//Time in ms of invulnerability;
             this.hp -= dmg;
             updateHp(this.hp);
         }
@@ -49,6 +49,7 @@ export class Player extends Unit {
                     let y = this.y - this.h / 2 - this.bulletInstance.h / 2;
                     let attack = new bulletType[this.ammo](x, y);
                     friendlyAttacks.push(attack);
+                    attack.type = "friendly";
                     this.shootWait = delayTime(attack.interval);//Interval between shots
                 }
             }

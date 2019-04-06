@@ -16,9 +16,9 @@
       "requireClear" : true,
       "enemies": 
       [
-        {"id":1,"pause":1000, "pos": ["A14", "B14", "J14"]},
-        {"id":1,"pause":0, "pos": ["A5", "B5", "F5"]},
-        {"id":1, "pos": ["A23","B23", "F23"]}
+        {"id":2,"pause":1000, "pos": ["A14", "B14", "J14"]},
+        {"id":2,"pause":0, "pos": ["A5", "B5", "F5"]},
+        {"id":2, "pos": ["A23","B23", "F23"]}
       ],
       "pickups": 
       [

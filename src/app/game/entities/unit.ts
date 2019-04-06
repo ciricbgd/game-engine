@@ -11,4 +11,7 @@ export class Unit extends Entity {
         this.ammo = ammoId;
         this.bulletInstance = new bulletType[ammoId];
     }
+    hurt(dmg) {
+        this.hp -= dmg;
+    }
 }
