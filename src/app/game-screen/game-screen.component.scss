@@ -74,6 +74,29 @@ canvas {
         }
       }
 
+      #energy-container {
+        width: 18vmin;
+        height: 5.2vmin;
+        background-image: url('../../assets/ui/energy.png');
+        background-repeat: repeat-x;
+        background-position-x: 0px;
+        background-position-y: -5.2vmin;
+        background-size: auto 200%;
+        margin-bottom: 1vmin;
+
+        #fullenergy {
+          height: 100%;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0%;
+          background-image: url('../../assets/ui/energy.png');
+          background-repeat: repeat-x;
+          background-position-x: 0px;
+          background-position-y: 0px;
+          background-size: auto 200%;
+        }
+      }
+
       #hp {
         #statHp {
           color: inherit;
@@ -102,23 +125,6 @@ canvas {
   right: 0;
 }
 
-
-// Arrow input - deprecated
-// .arrow{
-//   position:absolute;
-
-//   width:50px;
-//   height:50px;
-
-//   margin:50px;
-// }
-// .arrow *{
-//   //fill:red;
-// }
-// #ArrowUp{left:0;top:0;}
-// #ArrowDown{left:0;bottom:0;transform:rotate(180deg);}
-// #ArrowLeft{right:0;top:0;transform:rotate(270deg);}
-// #ArrowRight{right:0;bottom:0;transform:rotate(90deg);}
 
 //Pause Screen
 #pauseScreen {

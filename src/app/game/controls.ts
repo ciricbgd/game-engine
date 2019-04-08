@@ -5,6 +5,7 @@ import { togglePause } from './engine';
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
 document.addEventListener("mousemove", mouseMoveHandler, false); // Listening to mouse movement
+document.addEventListener("click", detectLeftButton, false); // Listening to mouse click
 export var MovementType = 'keyboard';
 
 
@@ -27,6 +28,13 @@ var downPressed = false;
 export var escapePressed = false;
 var lastPressed = [];
 
+
+function detectLeftButton(evt) {
+    evt = evt || window.event;
+    if ("buttons" in evt) {
+        player.shootspecial();
+    }
+}
 
 function keyDownHandler(event) {
     if (event.keyCode == 39) {

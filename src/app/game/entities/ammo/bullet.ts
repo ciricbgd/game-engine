@@ -4,10 +4,11 @@ import { friendlyAttacks, enemyAttacks } from './ammoCollection';
 
 export class Bullet extends Entity {
     type;
+    double: boolean = false;
     screen = bulletScreen;
-    boxColor = '#ffe14f';
     constructor() {
         super();
+        this.boxColor = '#ffe14f';
     }
     interval;//interval of bullets generated per time unit
     die(i) {

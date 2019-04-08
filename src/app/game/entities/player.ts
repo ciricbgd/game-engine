@@ -20,6 +20,7 @@ export class Player extends Unit {
         this.speed = 20 * this.sp;
         this.draw();
         this.changeAmmo(1);
+        this.changeSpecialAmmo(3);
         this.shootAllowed = false;
     }
     hurt(dmg) {
@@ -48,10 +49,27 @@ export class Player extends Unit {
                     let x = this.x;
                     let y = this.y - this.h / 2 - this.bulletInstance.h / 2;
                     let attack = new bulletType[this.ammo](x, y);
-                    friendlyAttacks.push(attack);
                     attack.type = "friendly";
+                    friendlyAttacks.push(attack);
+
                     this.shootWait = delayTime(attack.interval);//Interval between shots
                 }
+            }
+        }
+    }
+    shootspecial() {
+        if (this.shootAllowed) {
+            if (this.specialbulletInstance.double) {
+                let x = this.x + this.w * 0.65;
+                let y = this.y - this.h / 2 - this.bulletInstance.h / 2;
+                let attack = new bulletType[this.specialammo](x, y);
+                attack.type = "friendly";
+                friendlyAttacks.push(attack);
+                x = this.x - this.w * 0.65;
+                attack = new bulletType[this.specialammo](x, y);
+                attack.type = "friendly";
+                friendlyAttacks.push(attack);
+
             }
         }
     }

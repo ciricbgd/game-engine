@@ -5,6 +5,7 @@ export class LightRound extends Bullet {
         super();
         this.x = x;
         this.y = y;
+        this.boxColor = '#ffe14f';
     }
     height = 35;
     width = 20;
@@ -12,5 +13,5 @@ export class LightRound extends Bullet {
     w = this.width * this.sp;
     dmg = 15;
     speed = 10 * this.sp;
-    interval = 200; //interval between shots in ms
+    interval = 2000; //interval between shots in ms
 }
