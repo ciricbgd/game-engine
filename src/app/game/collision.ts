@@ -30,10 +30,11 @@ export function collisionDetection() {
         for (let i = 0; i < friendlyAttacks.length; i++) {
             //If bullet hits enemy
             if (collides(friendlyAttacks[i], enemies[j])) {
-                enemies[j].hurt(friendlyAttacks[i].dmg); // Enemy hurt  
+                enemies[j].hurt(friendlyAttacks[i].dmg); // Enemy hurt 
                 //If enemy hp is lower than 0
                 if (enemies[j].hp <= 0) { enemies[j].die(j); }
-                friendlyAttacks[i].die(i); //Bullet death
+                friendlyAttacks[i].onhit();
+                if(friendlyAttacks[i].dieonhit){friendlyAttacks[i].die(i);} //Bullet death
             }
         }
 

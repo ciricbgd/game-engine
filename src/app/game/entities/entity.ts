@@ -18,6 +18,9 @@ export class Entity {
     hp; //Health points
     multiplier; // multiplier fo image scaling
     sprite = new Image();
+    lifetime = undefined; // Life of an entity | number = miliseconds | 'endframe' = dies after animation finishes
+    timetodie = undefined;
+
     sound = {
         "death": { play() { console.log(`Death sound missing`) } }
     }
@@ -56,6 +59,15 @@ export class Entity {
     }
     changestatus(status) {
         this.status = status;
+    }
+    setlifetime(time){
+        let clock = new Date();
+        let currenttime = clock.getTime();
+        this.lifetime = time;
+        this.timetodie = currenttime + this.lifetime;
+    }
+    checklifetime(){
+
     }
     animation = {
         "row": 0,

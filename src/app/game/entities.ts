@@ -68,6 +68,14 @@ export function drawEntities() {
         friendlyAttacks[i].draw(); // Drawing the bullets
         friendlyAttacks[i].y -= friendlyAttacks[i].speed; //Moving the bullets
         if (friendlyAttacks[i].y < 0) { friendlyAttacks.splice(i, 1); } //Removing bullets when they get off screen
+        //Removing bullets that have a lifetime
+        else if(friendlyAttacks[i].timetodie!=undefined){
+            let clock = new Date();
+            let currenttime = clock.getTime();
+            if(currenttime >= friendlyAttacks[i].timetodie){
+                friendlyAttacks.splice(i, 1);
+            }
+        }
     }
 
     //Draw enemy bullets
