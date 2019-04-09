@@ -38,7 +38,8 @@ export class GameScreenComponent implements OnInit {
       document.getElementById("game-screen"),
       document.getElementById("pauseScreen"),
       document.getElementById("videoScreen"),
-      document.getElementById("theGame")
+      document.getElementById("theGame"),
+      document.getElementById("fullenergy")
     );
     entities.init();
     controls;
@@ -78,6 +79,9 @@ export class GameScreenComponent implements OnInit {
 
         //Game sequencing in order (waves, items, spawning etc...)
         game.playLevel(game.currentLevel);
+
+        //Update player stats like hp and energy
+        ui.updateStats();
       }
 
 

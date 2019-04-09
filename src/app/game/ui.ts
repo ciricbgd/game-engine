@@ -4,20 +4,23 @@ import { changeLevel, togglePause } from './engine';
 import { skipVideoIntro, skipVideoOutro } from './debug';
 
 export var hpBar: any;
+export var energyBar: any;
 var gameScreen: any;
 var pauseScreen: any;
 
-export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement) {
+export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement, energyBarElement) {
     hpBar = hpBarParam;
     gameScreen = gameScreenParam;
     pauseScreen = pauseScreenParam;
     theGame = theGameElement;
+    energyBar = energyBarElement;
     initVideo(videoScreen);
 }
 
-export function updateHp(hp) {
-    hpBar.style.width = hp + '%';
-    console.log(hp);
+export function updateStats() {
+    hpBar.style.width = player.hp + '%';
+    energyBar.style.width = player.energy + '%';
+    player.energy += 0.025; // const rate of energy recharge;
 }
 
 

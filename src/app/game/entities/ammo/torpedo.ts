@@ -8,8 +8,8 @@ export class Torpedo extends Bullet {
         this.y = y;
         this.boxColor = '#f44741';
         this.double = true;
-        this.onhit = () =>{ 
-            var explosion = new Explosion(this.x,this.y);
+        this.onhit = () => {
+            var explosion = new Explosion(this.x, this.y);
             explosion.type = 'friendly';
             this.spawn(explosion);
         }
@@ -20,5 +20,6 @@ export class Torpedo extends Bullet {
     w = this.width * this.sp;
     dmg = 15;
     speed = 15 * this.sp;
+    cost = 25;//cost in energy
     interval = 0; //interval between shots in ms
 }
