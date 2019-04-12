@@ -45,6 +45,7 @@ export class Enemy extends Unit {
                     attack.type = 'enemy';
                     enemyAttacks.push(attack);
                     this.shootWait = delayTime(attack.interval);//Interval between shots
+                    this.onshoot();
                 }
             }
         }

@@ -20,4 +20,7 @@ export class Unit extends Entity {
     hurt(dmg) {
         this.hp -= dmg;
     }
+    onshoot() {
+
+    }
 }
