@@ -111,6 +111,7 @@ export function updateEntities() {
     }
 }
 
+
 //Moving enemies
 export function moveEnemies() {
     enemies.forEach((enemy, i) => {

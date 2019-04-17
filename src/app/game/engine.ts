@@ -2,7 +2,7 @@ import { spawnEnemy, spawnPickup } from './entities';
 import { enemies } from './entities/enemies/enemyCollection';
 import { pickups } from './entities/pickups/pickupCollection';
 import { displayTitle, titleDisplayed, resetTitle, playOutro, outroVideoExecuted } from './ui';
-import { bg, setBackground } from './screen';
+import { bg, setBackground, enemyScreen } from './screen';
 import { BgMusic } from './sound';
 import * as debug from './debug';
 
@@ -82,12 +82,7 @@ export class Level {
             }
             wave.enemies.forEach(enemy => {
                 enemy.initiated = false;
-                if (enemy.pause != undefined) {
-                    enemy.pauseClear = false;
-                } else {
-                    enemy.pause = 0;
-                    enemy.pauseClear = false;
-                }
+                enemy.pauseClear = enemy.pauseClear != undefined ? enemyScreen.pauseClear : 0;
             });
 
             wave.pickups.forEach(pickup => {
@@ -152,12 +147,10 @@ export function playLevel(lvl) {
                             enemy.initiated = true;
                             enemy.pauseClear = true;
                             spawnEnemy(enemy.id, enemy.pos);
-                            if (enemy.pause == undefined) enemy.pauseTime = time + enemy.pause;
+                            if (enemy.pause == undefined) { enemy.pauseTime = time + enemy.pause };
                         }
-                        else {
-                            if (time >= wave.enemies[i - 1].pauseTime) {
-                                wave.enemies[i - 1].pauseClear = true;
-                            }
+                        else if (time >= wave.enemies[i - 1].pauseTime) {
+                            wave.enemies[i - 1].pauseClear = true;
                         }
                     }
                     else {
