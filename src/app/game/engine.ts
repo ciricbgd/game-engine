@@ -137,17 +137,20 @@ export function playLevel(lvl) {
             let enemiesToSpawn = wave.enemies.length;
             if (enemiesToSpawn > 0) {
                 wave.enemies.forEach((enemy, i) => {
+                    let clock = new Date();
+                    let time = clock.getTime();
                     if (!enemy.initiated) {
+                        //console.log(time);
                         if (i == 0) {
-                            enemy.initiated = true;
                             spawnEnemy(enemy.id, enemy.pos);
+                            enemy.initiated = true;
                             enemy.pauseTime = time + enemy.pause;
                         }
                         else if (wave.enemies[i - 1].pauseClear) {
+                            enemy.pauseClear = false;
                             enemy.initiated = true;
-                            enemy.pauseClear = true;
                             spawnEnemy(enemy.id, enemy.pos);
-                            if (enemy.pause == undefined) { enemy.pauseTime = time + enemy.pause };
+                            enemy.pauseTime = enemy.pause == undefined ? 0 : enemy.pause + time;
                         }
                         else if (time >= wave.enemies[i - 1].pauseTime) {
                             wave.enemies[i - 1].pauseClear = true;

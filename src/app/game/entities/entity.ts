@@ -22,7 +22,11 @@ export class Entity {
     timetodie = undefined;
 
     sound = {
-        "death": { play() { console.log(`Death sound missing`) } }
+        "death": {
+            play() {
+                // console.log(`Death sound missing`);
+            }
+        }
     }
 
     constructor() {
@@ -60,14 +64,14 @@ export class Entity {
     changestatus(status) {
         this.status = status;
     }
-    setlifetime(time){
+    setlifetime(time) {
         let clock = new Date();
         let currenttime = clock.getTime();
         this.lifetime = time;
         this.timetodie = currenttime + this.lifetime;
     }
-    checklifetime(){
-
+    changeOpacity(n) {
+        this.screen.globalAlpha = n;
     }
     animation = {
         "row": 0,

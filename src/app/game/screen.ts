@@ -22,8 +22,11 @@ export var rightSide: any;
 
 export function init(playerCanvasParam, bulletCanvasParam, enemyCanvasParam, leftSideParam, rightSideParam, bg0, bg1, bg2) {
     playerCanvas = playerCanvasParam;
+    playerCanvas.imageSmoothingEnabled = false;
     bulletCanvas = bulletCanvasParam;
+    bulletCanvas.imageSmoothingEnabled = false;
     enemyCanvas = enemyCanvasParam;
+    enemyCanvas.imageSmoothingEnabled = false;
     leftSide = leftSideParam;
     rightSide = rightSideParam;
 
