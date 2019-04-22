@@ -11,7 +11,7 @@ export class ScooterGirl extends Enemy {
         this.w = this.width * this.sp;
         this.speed = 25;
         this.dmg = 10;
-        this.hp = 75;
+        this.hp = 85;
         this.x = x;
         this.y = y;
 

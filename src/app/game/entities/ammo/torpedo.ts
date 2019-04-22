@@ -13,13 +13,16 @@ export class Torpedo extends Bullet {
             explosion.type = 'friendly';
             this.spawn(explosion);
         }
+
+        this.setWidthHeightMultiplier(24, 100, 0.8);
+        this.sprite.src = "../../assets/sprites/ammo/torpedo/grey.png";
+        this.animation.framesPerRow = 1;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
     }
-    height = 85;
-    width = 25;
-    h = this.height * this.sp;
-    w = this.width * this.sp;
-    dmg = 15;
-    speed = 15 * this.sp;
+
+
+    dmg = 25;
+    speed = 11 * this.sp;
     cost = 25;//cost in energy
     interval = 0; //interval between shots in ms
 }

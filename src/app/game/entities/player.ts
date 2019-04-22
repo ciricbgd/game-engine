@@ -10,10 +10,7 @@ export class Player extends Unit {
         super();
         this.type = 'friend';
         this.screen = playerScreen;
-        this.height = 120;
-        this.h = this.height * this.sp;
-        this.width = 100;
-        this.w = this.width * this.sp;
+
         this.x = sw / 2;
         this.y = sh - (this.h / 2 + 100 * this.sp);
         this.hp = 100;
@@ -22,6 +19,12 @@ export class Player extends Unit {
         this.changeAmmo(1);
         this.changeSpecialAmmo(3);
         this.shootAllowed = false;
+
+        this.setWidthHeightMultiplier(90, 118, 1.2);
+
+        this.sprite.src = "../../assets/sprites/player/boat.png";
+        this.animation.framesPerRow = 1;
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
     }
     hurt(dmg) {
         let clock = new Date();
@@ -59,12 +62,12 @@ export class Player extends Unit {
     shootspecial() {
         if (this.shootAllowed && this.energy >= this.specialbulletInstance.cost) {
             if (this.specialbulletInstance.double) {
-                let x = this.x + this.w * 0.65;
+                let x = this.x + this.w * 0.7;
                 let y = this.y - this.h / 2 - this.bulletInstance.h / 2;
                 let attack = new bulletType[this.specialammo](x, y);
                 attack.type = "friendly";
                 friendlyAttacks.push(attack);
-                x = this.x - this.w * 0.65;
+                x = this.x - this.w * 0.7;
                 attack = new bulletType[this.specialammo](x, y);
                 attack.type = "friendly";
                 friendlyAttacks.push(attack);

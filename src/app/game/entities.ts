@@ -66,6 +66,7 @@ export function drawEntities() {
     player.shoot();
     for (let i = 0; i < friendlyAttacks.length; i++) {
         friendlyAttacks[i].draw(); // Drawing the bullets
+        friendlyAttacks[i].animate(); // Drawing the bullets
         friendlyAttacks[i].y -= friendlyAttacks[i].speed; //Moving the bullets
         if (friendlyAttacks[i].y < 0) { friendlyAttacks.splice(i, 1); } //Removing bullets when they get off screen
         //Removing bullets that have a lifetime
