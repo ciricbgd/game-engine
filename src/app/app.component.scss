@@ -1,8 +1,14 @@
+@font-face {
+  font-family: PixelFont;
+  src: url('../assets/fonts/FFFFORWA.TTF');
+}
+
 // Video
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  letter-spacing: 0.3vmin;
 }
 
 html,
@@ -12,6 +18,7 @@ body {
 
 #videoContainer {
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: flex-start;
   image-rendering: pixelated;
@@ -24,4 +31,40 @@ body {
   overflow: hidden;
   object-fit: stretch;
   image-rendering: pixelated;
+}
+
+@-webkit-keyframes pulse {
+  to {
+    color: rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes pulse {
+  to {
+    color: rgba(255, 255, 255, 0);
+  }
+}
+
+#skipIntro {
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: PixelFont;
+  cursor: default;
+  position: absolute;
+  font-size: 3vmin;
+  bottom: 3vmin;
+  z-index: 9999;
+
+
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+
 }
