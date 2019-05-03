@@ -13,5 +13,5 @@ export class LightRound extends Bullet {
     w = this.width * this.sp;
     dmg = 15;
     speed = 10 * this.sp;
-    interval = 2000; //interval between shots in ms
+    interval = 100; //interval between shots in ms
 }

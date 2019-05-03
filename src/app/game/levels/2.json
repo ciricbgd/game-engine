@@ -1,0 +1,31 @@
+{
+    "title": "Level 2",
+    "subtitle": "Get ready!",
+  
+    "background": [
+      {"src" : "purplesky.png", "speed": 6, "height": 650, "width":400},
+      {"src" : "elem2.png", "speed": 3, "height": 100, "width": 300, "size":50, "margin":0, "place": "right", "delay": 0}
+    ],
+  
+    "music":"soundtrack_pop_is_just_a_matter_of_preference.mp3",
+  
+    "waves":
+    [
+      {
+        "pause" : 2000,
+        "requireClear" : true,
+        "enemies": 
+        [
+          {"id":2,"pause":1000, "pos": ["A14", "B14", "J14"]},
+          {"id":2,"pause":0, "pos": ["A5", "B5", "F5"]},
+          {"id":2, "pos": ["A23","B23", "F23"]}
+        ],
+        "pickups": 
+        [
+          
+        ]
+      }
+  
+      
+    ]
+  }

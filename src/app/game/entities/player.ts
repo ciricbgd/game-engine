@@ -2,6 +2,7 @@ import { Unit } from './unit';
 import { playerScreen, sw, sh } from '../screen';
 import { time, delayTime } from '../engine';
 import { bulletType, friendlyAttacks } from './ammo/ammoCollection';
+import { playOutro } from '../ui';
 
 export class Player extends Unit {
     inv; //invulnerability timer
@@ -81,6 +82,6 @@ export class Player extends Unit {
 
     die() {
         this.sound.death.play();
-        console.log('Game Over');
+        playOutro('You failed :( ... maybe try again?');
     }
 }

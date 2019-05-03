@@ -7,6 +7,9 @@ export var hpBar: any;
 export var energyBar: any;
 var gameScreen: any;
 var pauseScreen: any;
+export var videoSrc:any;
+export var videoStage = 1;
+
 
 export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement, energyBarElement) {
     hpBar = hpBarParam;
@@ -14,6 +17,7 @@ export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen,
     pauseScreen = pauseScreenParam;
     theGame = theGameElement;
     energyBar = energyBarElement;
+    videoSrc = <HTMLElement>document.querySelector("#videoScreen > source");
     initVideo(videoScreen);
 }
 
@@ -42,7 +46,7 @@ let Title, SubTitle, TitleGroup;
 export function displayTitle(title, subtitle) {
     if (!debug.skipIntro) {
         if (titleDisplayProgress == -60) {
-            TitleGroup = <HTMLElement>document.querySelector("#titlegroup")
+            TitleGroup = <HTMLElement>document.querySelector("#titlegroup");
             Title = <HTMLElement>document.querySelector("#titlegroup > #leveltitle");
             SubTitle = <HTMLElement>document.querySelector("#titlegroup > #levelsubtitle");
             Title.innerHTML = title;
@@ -75,15 +79,34 @@ export var theGame;
 
 function initVideo(videoElement) {
     video = videoElement;
+    video.muted=true;
 
     video.onended = function () {
         //After the video ends
-        video.muted = true;
-        video.style.display = "none";
-        theGame.style.display = "block";
-        togglePause("unpaused");
-        changeLevel(1);
+        playNextVideo();
     }
+
+    function playNextVideo(){
+        if(videoStage >=3){
+            video.muted = true;
+            video.style.display = "none";
+            theGame.style.display = "block";
+            togglePause("unpaused");
+
+            document.removeEventListener("click", playNextVideo);
+
+            changeLevel(1);
+        }
+        else{
+            videoStage++;
+            video.pause();
+            videoSrc.setAttribute('src', `../../assets/Intro-${videoStage}.mp4`);
+            video.load();
+            video.play();
+        }
+    }
+
+    document.addEventListener("click", playNextVideo);
 
 
     //Play the video
@@ -103,20 +126,20 @@ function initVideo(videoElement) {
 // Outro video
 export var outroVideoExecuted = false;
 
-export function playOutro() {
+export function playOutro(msg?) {
     video.src = '../../assets/outro.mp4';
     theGame.style.display = "none";
     video.style.display = "block";
 
     video.onended = function () {
         //After the video ends
-        alert('You did it 💩');
+        alert(msg==undefined?'You did it 💩':msg);
         location.reload();
     }
 
     if (skipVideoOutro) {
         //Debug skipping video outro
-        alert('You did it 💩');
+        alert(msg==undefined?'You did it 💩':msg);
         location.reload();
     }
     else {
