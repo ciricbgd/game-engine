@@ -7,7 +7,7 @@ export var hpBar: any;
 export var energyBar: any;
 var gameScreen: any;
 var pauseScreen: any;
-export var videoSrc:any;
+export var videoSrc: any;
 export var videoStage = 1;
 
 
@@ -79,34 +79,45 @@ export var theGame;
 
 function initVideo(videoElement) {
     video = videoElement;
-    video.muted=true;
+    video.muted = true;
 
     video.onended = function () {
         //After the video ends
         playNextVideo();
     }
 
-    function playNextVideo(){
-        if(videoStage >=3){
-            video.muted = true;
-            video.style.display = "none";
-            theGame.style.display = "block";
-            togglePause("unpaused");
+    function playNextVideo() {
+        if (videoStage == 3) {
 
-            document.removeEventListener("click", playNextVideo);
 
-            changeLevel(1);
+            if (skipClicked) {
+                videoStage++;
+                video.muted = true;
+                video.style.display = "none";
+                theGame.style.display = "block";
+                togglePause("unpaused");
+
+                document.removeEventListener("click", function () { skipClicked = true; playNextVideo() });
+
+
+
+                changeLevel(1);
+            }
+
         }
-        else{
+        else {
+            skipClicked = false;
             videoStage++;
             video.pause();
             videoSrc.setAttribute('src', `../../assets/Intro-${videoStage}.mp4`);
+            if (videoStage == 3) { video.loop = true }
             video.load();
             video.play();
         }
     }
 
-    document.addEventListener("click", playNextVideo);
+    let skipClicked = false;
+    document.addEventListener("click", function () { skipClicked = true; playNextVideo() });
 
 
     //Play the video
@@ -133,13 +144,13 @@ export function playOutro(msg?) {
 
     video.onended = function () {
         //After the video ends
-        alert(msg==undefined?'You did it 💩':msg);
+        alert(msg == undefined ? 'You did it 💩' : msg);
         location.reload();
     }
 
     if (skipVideoOutro) {
         //Debug skipping video outro
-        alert(msg==undefined?'You did it 💩':msg);
+        alert(msg == undefined ? 'You did it 💩' : msg);
         location.reload();
     }
     else {
