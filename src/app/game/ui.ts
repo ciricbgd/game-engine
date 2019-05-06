@@ -31,11 +31,11 @@ export function updateStats() {
 //Hiding mouse cursor
 export function updateUi(gameStatus) {
     if (gameStatus == 'unpaused') {
-        //gameScreen.style.cursor = 'none';
+        gameScreen.style.cursor = 'none';
         pauseScreen.style.display = 'none';
     }
     else if (gameStatus == 'paused') {
-        //gameScreen.style.cursor = 'auto';
+        gameScreen.style.cursor = 'auto';
         pauseScreen.style.display = 'inherit';
     }
 }

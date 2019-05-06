@@ -6,9 +6,11 @@ import { pickups, pickupType } from './entities/pickups/pickupCollection';
 import { bulletType, enemyAttacks, friendlyAttacks } from './entities/ammo/ammoCollection';
 
 import { Player } from './entities/player';
+import { Avatar } from './entities/avatar';
 //!Entities
 
 export var player;
+export var avatar;
 
 export function getEntities() {
     return player != undefined ? [player].concat(enemies, pickups, friendlyAttacks, enemyAttacks) : [];
@@ -16,6 +18,7 @@ export function getEntities() {
 
 export function init() {
     player = new Player();
+    avatar = new Avatar(screen.sw/2,screen.sh/2);
 }
 
 

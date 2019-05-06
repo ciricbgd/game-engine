@@ -41,7 +41,18 @@ export class GameScreenComponent implements OnInit {
       document.getElementById("theGame"),
       document.getElementById("fullenergy")
     );
+    
+
     entities.init();
+
+    //Avatar movement
+    document.addEventListener("mousemove", mouseMoveHandler, false); // Listening to mouse movement
+    let  mouseX, mouseY;
+    function mouseMoveHandler(e) {
+         mouseX = e.clientX - screen.playerCanvas.offsetLeft;
+         mouseY = e.clientY - screen.playerCanvas.offsetTop;
+    }
+
     controls;
     sound;
 
@@ -61,6 +72,8 @@ export class GameScreenComponent implements OnInit {
 
         //Draw and move player
         controls.changeMovement();
+        //Move the ghost
+        entities.avatar.move(mouseX,mouseY);
 
         //Draw entities
         entities.drawEntities();
