@@ -22,6 +22,11 @@ export class Entity {
     timetodie = undefined;
 
     sound = {
+        "spawn" : {
+            play(){
+                
+            }
+         },
         "death": {
             play() {
                 // console.log(`Death sound missing`);

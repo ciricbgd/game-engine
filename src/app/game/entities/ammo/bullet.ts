@@ -7,6 +7,9 @@ export class Bullet extends Entity {
     double: boolean = false;
     dieonhit = true;
     screen = bulletScreen;
+
+    
+
     constructor() {
         super();
         this.boxColor = '#ffe14f';
@@ -30,5 +33,6 @@ export class Bullet extends Entity {
         else if (this.type == 'enemy') {
             enemyAttacks.push(attack);
         }
+
     }
 }
