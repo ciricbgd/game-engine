@@ -2,6 +2,7 @@ import { player } from './entities';
 import *  as debug from './debug';
 import { changeLevel, togglePause } from './engine';
 import { skipVideoIntro, skipVideoOutro } from './debug';
+import { HttpInterceptorHandler } from '@angular/common/http/src/interceptor';
 
 export var hpBar: any;
 export var energyBar: any;
@@ -86,7 +87,10 @@ function initVideo(videoElement) {
         playNextVideo();
     }
 
-    function playNextVideo() {
+    document.addEventListener("click", function () { skipClicked = true; playNextVideo() });
+
+    let playNextVideo = function playNextVideo() {
+
         if (videoStage == 3) {
 
 
@@ -97,15 +101,13 @@ function initVideo(videoElement) {
                 theGame.style.display = "block";
                 togglePause("unpaused");
 
-                document.removeEventListener("click", function () { skipClicked = true; playNextVideo() });
-
-
+                introEnded();
 
                 changeLevel(1);
             }
 
         }
-        else {
+        else if (videoStage < 3) {
             skipClicked = false;
             videoStage++;
             video.pause();
@@ -117,7 +119,9 @@ function initVideo(videoElement) {
     }
 
     let skipClicked = false;
-    document.addEventListener("click", function () { skipClicked = true; playNextVideo() });
+    function introEnded() {
+        document.removeEventListener("click", function () { skipClicked = true; playNextVideo() });
+    }
 
 
     //Play the video
@@ -125,6 +129,8 @@ function initVideo(videoElement) {
         video.style.display = "none";
         togglePause("unpaused");
         changeLevel(1);
+
+
         theGame.style.display = "block";
     }
     else {

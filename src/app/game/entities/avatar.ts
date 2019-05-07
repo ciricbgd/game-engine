@@ -22,6 +22,5 @@ export class Avatar extends Entity {
             this.y = y;  
             this.animate();
             this.draw();
-            console.log(this);
     }
 }
