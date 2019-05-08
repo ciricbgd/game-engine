@@ -1,5 +1,6 @@
 import { Bullet } from './bullet';
 import { Explosion } from './explosion';
+import {sound} from '../../sound';
 
 export class Torpedo extends Bullet {
     constructor(x?, y?) {
@@ -18,6 +19,11 @@ export class Torpedo extends Bullet {
         this.sprite.src = "../../assets/sprites/ammo/torpedo/grey.png";
         this.animation.framesPerRow = 1;
         this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
+    
+        this.sound.spawn = new sound(`../../assets/sound/dan sound effects MP3/beep_030.mp3`);
+        this.sound.spawn.volume(0.01);
+        this.sound.spawn.play();
+    
     }
 
 

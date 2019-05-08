@@ -1,4 +1,5 @@
 import { Bullet } from './bullet';
+import {sound} from '../../sound';
 
 export class Explosion extends Bullet {
     dieonhit = false;
@@ -15,6 +16,9 @@ export class Explosion extends Bullet {
         this.animation.framesPerRow = 22;
         this.animation.states.idle = { "startFrame": 0, "endFrame": 23, "startRow": 1, "endRow": 1, "fps": 16, }
 
+        this.sound.spawn = new sound(`../../assets/sound/fx/Explosions/MP3/Explosion 8 - Sound effects Pack 2.mp3`);
+        this.sound.spawn.volume(0.5);
+        this.sound.spawn.play();
     }
     onhit() {
         this.dmg = 0;

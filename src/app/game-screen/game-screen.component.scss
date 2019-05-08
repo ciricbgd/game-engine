@@ -42,10 +42,22 @@ canvas {
     width: 100vmin;
     font-size: 2rem;
 
+    #score-container {
+      font-family: PixelFont;
+      color:white;
+      padding-left:3vmin;
+      p{
+        display:inline-block;
+        font-size:2vmin;
+      }
+    }
+
+    // Stats
     #stats {
       padding: 3vmin;
       position: absolute;
       bottom: 0;
+
 
       #heart-container {
         width: 18vmin;

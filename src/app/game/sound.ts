@@ -16,9 +16,13 @@ export function sound(src?) {
     this.stop = function () {
         this.sound.pause();
     }
+    this.volume = function (volume){
+        this.sound.volume = volume;
+    }
 }
 
 //Background music
 export var BgMusic = new sound();
+BgMusic.volume(0.1);
 
 

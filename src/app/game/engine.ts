@@ -1,7 +1,7 @@
 import { spawnEnemy, spawnPickup } from './entities';
 import { enemies } from './entities/enemies/enemyCollection';
 import { pickups } from './entities/pickups/pickupCollection';
-import { displayTitle, titleDisplayed, resetTitle, playOutro, outroVideoExecuted } from './ui';
+import { displayTitle, titleDisplayed, resetTitle, playOutro, outroVideoExecuted, gameOutcome } from './ui';
 import { bg, setBackground, enemyScreen } from './screen';
 import { BgMusic } from './sound';
 import * as debug from './debug';
@@ -222,7 +222,7 @@ export function playLevel(lvl) {
                     }
                     else {
                         // Game finished, you win!
-                        if (!outroVideoExecuted) { playOutro(); }
+                        if (!outroVideoExecuted) { gameOutcome.won(); }
                     }
                 }
             }

@@ -2,12 +2,17 @@ import { Entity } from '../entity';
 import { playerScreen } from '../../screen';
 import { pickups } from './pickupCollection';
 import { player } from '../../entities';
+import {sound} from '../../sound';
 
 export class Pickup extends Entity {
     balloon;
     constructor() {
         super();
         this.screen = playerScreen;
+        this.sound.death = new sound(`../../assets/sound/fx/1up/MP3/1up 2 - Sound effects Pack 2.mp3`);
+        this.sound.death.volume(0.1);
+
+    
 
         console.log();
     }
@@ -19,6 +24,7 @@ export class Pickup extends Entity {
     }
     activate(i) {
         this.onPickup(player);
+        this.sound.death.play();
         this.die(i);
     }
 

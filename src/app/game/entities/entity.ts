@@ -25,12 +25,14 @@ export class Entity {
         "spawn" : {
             play(){
                 
-            }
+            },
+            volume(volume:any){}
          },
         "death": {
             play() {
                 // console.log(`Death sound missing`);
-            }
+            },
+            volume(volume:any){}
         }
     }
 

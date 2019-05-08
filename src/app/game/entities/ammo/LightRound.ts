@@ -7,7 +7,8 @@ export class LightRound extends Bullet {
         this.x = x;
         this.y = y;
         this.boxColor = '#ffe14f';
-        this.sound.spawn = new sound("../../assets/sound/fx/wilhelmscream.wav");
+        this.sound.spawn = new sound(`../../assets/sound/dan sound effects MP3/wt_007.mp3`);
+        this.sound.spawn.volume(0.003);
         this.sound.spawn.play();
     }
     height = 35;

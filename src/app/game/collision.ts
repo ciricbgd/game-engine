@@ -3,6 +3,7 @@ import { pickups } from './entities/pickups/pickupCollection';
 import { enemies } from './entities/enemies/enemyCollection';
 import { friendlyAttacks, enemyAttacks } from './entities/ammo/ammoCollection';
 
+
 export function collides(entity1, entity2) {
     if (entity1 == null || entity1 == undefined || entity2 == null || entity2 == undefined) {
         return;

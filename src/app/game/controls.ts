@@ -1,6 +1,6 @@
 import { playerCanvas, sw, sh } from './screen';
 import { player } from '../game/entities';
-import { togglePause } from './engine';
+import { togglePause, status } from './engine';
 
 document.addEventListener('keydown', keyDownHandler, false); //Listener to keydown events
 document.addEventListener('keyup', keyUpHandler, false); //Listener to keyup events
@@ -35,7 +35,7 @@ var lastPressed = [];
 
 function detectLeftButton(evt) {
     evt = evt || window.event;
-    if ("buttons" in evt) {
+    if ("buttons" in evt && status!="paused") {
         player.shootspecial();
     }
 }
