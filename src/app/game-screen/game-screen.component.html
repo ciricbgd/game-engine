@@ -22,11 +22,29 @@
   <div class="screen-field-container">
     <div id="screen-field">
       <div id="pauseScreen" style="display:none;">
-        <p style="display:block;">
+
+        <div class="menuField" id="gamePaused">
           <p>Game paused</p>
           <br><br>
           <p class="gameOptionsButton" id="settingsButton">Settings</p>
           <p class="gameOptionsButton" id="creditsButton">Credits</p>
+        </div>
+
+        <div class="menuField" id="gameLost" style="display:none;">
+          <p>Aww man, you lost :(</p>
+          <br><br>
+          <a class="gameOptionsButton" href="javascript:window.location.href=window.location.href">Try Again</a>
+          <br>
+          <a class="gameOptionsButton" target="_blank" href="https://giphy.com/embed/39manZbf7sISUlaRGG"
+            id="cryAgain">Cry again</a>
+        </div>
+
+        <div class="menuField" id="gameWon" style="display:none;">
+          <p>Wow you won :o</p>
+          <p>good job, thanks for playing</p>
+          <br><br>
+          <a class="gameOptionsButton" href="javascript:window.location.href=window.location.href">Play Again</a>
+        </div>
       </div>
 
       <div id="titlegroup">

@@ -3,6 +3,8 @@ import *  as debug from './debug';
 import { changeLevel, togglePause } from './engine';
 import { skipVideoIntro, skipVideoOutro } from './debug';
 import { HttpInterceptorHandler } from '@angular/common/http/src/interceptor';
+import { disablePause } from './controls';
+
 
 export var hpBar: any;
 export var energyBar: any;
@@ -10,7 +12,7 @@ var gameScreen: any;
 var pauseScreen: any;
 export var videoSrc: any;
 export var videoStage = 1;
-
+declare let $: any;
 
 export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement, energyBarElement) {
     hpBar = hpBarParam;
@@ -19,7 +21,24 @@ export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen,
     theGame = theGameElement;
     energyBar = energyBarElement;
     videoSrc = <HTMLElement>document.querySelector("#videoScreen > source");
+    gameWon = <HTMLElement>document.querySelector("#gameWon");
+    gameLost = <HTMLElement>document.querySelector("#gameLost");
+    gamePaused = <HTMLElement>document.querySelector("#gamePaused");
     initVideo(videoScreen);
+
+    cryAgain = <HTMLElement>document.querySelector("#cryAgain");
+
+    $.ajax({
+        url: `https://api.giphy.com/v1/gifs/random?api_key=IH5OMHObs41e3oPajWu2hWD258XrAylr&tag=cry&rating=PG-13`,
+        type: 'GET',
+        error: function () { },
+        success: function (gif) {
+            cryAgain.href = gif.data.images.original.url;
+
+            console.log(cryAgain.href);
+        }
+    });
+
 }
 
 export function updateStats() {
@@ -150,17 +169,34 @@ export function playOutro(msg?) {
 
     video.onended = function () {
         //After the video ends
-        alert(msg == undefined ? 'You did it 💩' : msg);
-        location.reload();
+        gameOutcome.won();
     }
 
     if (skipVideoOutro) {
         //Debug skipping video outro
-        alert(msg == undefined ? 'You did it 💩' : msg);
-        location.reload();
+        gameOutcome.won();
     }
     else {
         video.play();
         outroVideoExecuted = true;
+    }
+}
+
+
+var cryAgain = undefined;
+var gameLost, gameWon, gamePaused;
+
+export var gameOutcome = {
+    won() {
+        disablePause();
+        togglePause('paused');
+        gamePaused.style.display = "none";
+        gameWon.style.display = "block";
+    },
+    lost() {
+        disablePause();
+        togglePause('paused');
+        gamePaused.style.display = "none";
+        gameLost.style.display = "block";
     }
 }

@@ -3,7 +3,7 @@
   "subtitle": "Get ready!",
 
   "background": [
-    {"src" : "Blue-waters.png", "speed": 6, "width":128, "height": 256},
+    {"src" : "river.png", "speed": 12, "width":128, "height": 256},
     {"src" : "", "speed": 3, "height": 100, "width": 300, "size":50, "margin":0, "place": "right", "delay": 0}
   ],
 

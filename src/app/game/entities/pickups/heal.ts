@@ -4,7 +4,7 @@ export class Heal extends Pickup {
     constructor(x, y) {
         super(); this.x = x; this.y = y;
 
-        this.setWidthHeightMultiplier(24, 24, 2);
+        this.setWidthHeightMultiplier(17, 14, 4);
 
         this.sprite.src = "../../assets/sprites/pickups/heart.png";
 

@@ -8,6 +8,10 @@ document.addEventListener("mousemove", mouseMoveHandler, false); // Listening to
 document.addEventListener("click", detectLeftButton, false); // Listening to mouse click
 export var MovementType = 'keyboard';
 
+export var pauseDisabled = false;
+export function disablePause() {
+    pauseDisabled = true;
+};
 
 //Mouse movement
 export var mouseX;
@@ -54,7 +58,7 @@ function keyDownHandler(event) {
 
     }
 
-    if (event.keyCode == 27) {
+    if (event.keyCode == 27 && !pauseDisabled) {
         if (escapePressed == true) {
             togglePause('unpaused');
             escapePressed = false;

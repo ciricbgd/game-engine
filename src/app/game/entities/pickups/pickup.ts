@@ -12,7 +12,7 @@ export class Pickup extends Entity {
         console.log();
     }
     spawnBalloon() {
-        this.balloon = new Balloon(this.x, this.y, this.animation.h, this.animation.w, this.multiplier * 1.6);
+        this.balloon = new Balloon(this.x, this.y, this.animation.h, this.animation.w, this.multiplier * 1);
     }
     die(i) {
         pickups.splice(i, 1);
@@ -30,15 +30,22 @@ export class Pickup extends Entity {
 export class Balloon extends Entity {
     constructor(x, y, w, h, m) {
         super();
-        this.x = x; this.y = y;
+        this.x = x - w / 4; this.y = y - h / 4;
         this.screen = playerScreen;
 
-        this.setWidthHeightMultiplier(w, h, m);
+        this.setWidthHeightMultiplier(50, 50, m);
 
-        this.sprite.src = "../../assets/sprites/pickups/balloon.png";
+        this.sprite.src = "../../assets/sprites/pickups/bouble.png";
 
         this.animation.framesPerRow = 1;
-        this.animation.states.idle = { "startFrame": 1, "endFrame": 1, "startRow": 1, "endRow": 1, "fps": 1, }
+        this.animation.states.idle = { "startFrame": 1, "endFrame": 6, "startRow": 1, "endRow": 1, "fps": 10, }
         this.state('idle');
+    }
+}
+
+export class BalloonBurst extends Balloon {
+    constructor(x, y, w, h, m) {
+        super(x, y, w, h, m);
+        this.animation.framesPerRow = 6;
     }
 }

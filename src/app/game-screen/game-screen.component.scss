@@ -137,6 +137,12 @@ canvas {
   justify-content: center;
   align-items: center;
   z-index: 99999;
+
+  a,
+  p {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .gameOptionsButton {
