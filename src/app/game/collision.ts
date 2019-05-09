@@ -2,6 +2,7 @@ import { player } from './entities';
 import { pickups } from './entities/pickups/pickupCollection';
 import { enemies } from './entities/enemies/enemyCollection';
 import { friendlyAttacks, enemyAttacks } from './entities/ammo/ammoCollection';
+import { updateScore } from './ui';
 
 
 export function collides(entity1, entity2) {
@@ -33,9 +34,12 @@ export function collisionDetection() {
             if (collides(friendlyAttacks[i], enemies[j])) {
                 enemies[j].hurt(friendlyAttacks[i].dmg); // Enemy hurt 
                 //If enemy hp is lower than 0
-                if (enemies[j].hp <= 0) { enemies[j].die(j); }
+                if (enemies[j].hp <= 0) {
+                    updateScore(enemies[j].worth);
+                    enemies[j].die(j);
+                }
                 friendlyAttacks[i].onhit();
-                if(friendlyAttacks[i].dieonhit){friendlyAttacks[i].die(i);} //Bullet death
+                if (friendlyAttacks[i].dieonhit) { friendlyAttacks[i].die(i); } //Bullet death
             }
         }
 

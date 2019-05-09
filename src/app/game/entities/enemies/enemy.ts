@@ -9,6 +9,7 @@ import { enemies } from './enemyCollection';
 export class Enemy extends Unit {
     dmg = 0;
     speed = 0;
+    worth = 100; // How many scoreboard points the enemy is worth
     spawnpath = {
         "progress": {
             "start": 0,

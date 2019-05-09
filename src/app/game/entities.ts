@@ -18,7 +18,7 @@ export function getEntities() {
 
 export function init() {
     player = new Player();
-    avatar = new Avatar(screen.sw/2,screen.sh/2);
+    avatar = new Avatar(screen.sw / 2, screen.sh / 2);
 }
 
 
@@ -63,6 +63,9 @@ export function drawEntities() {
     for (let i = 0; i < enemies.length; i++) {
         enemies[i].draw();
         enemies[i].animate();
+
+        enemies[i].worth -= 0.1;
+        if (enemies[i].worth < 0) { enemies[i].worth = 0; }
     }
 
     //Draw friendly bullets
@@ -129,7 +132,7 @@ export function moveEnemies() {
 
 //Moving stationary items
 export function moveStationary() {
-    let speed = screen.bg.layer0.speed * screen.sp;
+    let speed = 7.5 * screen.sp;
 
     pickups.forEach((pickup, i) => {
         pickup.y += speed;

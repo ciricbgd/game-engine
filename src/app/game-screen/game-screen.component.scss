@@ -44,11 +44,12 @@ canvas {
 
     #score-container {
       font-family: PixelFont;
-      color:white;
-      padding-left:3vmin;
-      p{
-        display:inline-block;
-        font-size:2vmin;
+      color: white;
+      padding-left: 3vmin;
+
+      p {
+        display: inline-block;
+        font-size: 2vmin;
       }
     }
 
@@ -118,7 +119,7 @@ canvas {
 #left-side,
 #right-side {
   height: 100%;
-  background-color: #bbb;
+  background-color: black;
   position: absolute;
   top: 0;
   z-index: 1;

@@ -42,7 +42,7 @@ document.addEventListener('mouseover', function () {
 
 export var userActive = false;
 
-export var numberOfLevels = 1;
+export var numberOfLevels = 2;
 
 //The class of a current level
 export class Level {
@@ -63,9 +63,9 @@ export class Level {
         this.background = lvl.background;
         this.music = '../../assets/sound/background/' + lvl.music;
         //setting screen background
-        this.bg0 = lvl.background[0];
-        this.bg1 = lvl.background[1];
-        this.bg2 = lvl.background[2];
+        this.bg0 = lvl.background[0] ? lvl.background[0] : null;
+        this.bg1 = lvl.background[1] ? lvl.background[1] : null;
+        this.bg2 = lvl.background[2] ? lvl.background[2] : null;
         setBackground([this.bg0, this.bg1, this.bg2]);
         //!setting screen background
         lvl.waves.forEach(wave => {

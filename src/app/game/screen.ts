@@ -178,7 +178,7 @@ export var bg = {
 
 export function setBackground(bgLayer) {
     bgLayer.forEach((bcg, i) => {
-        if (bcg != null) {
+        if (bcg != null && bcg != '' && bcg != undefined) {
             bg.layer(i).obj.style.backgroundImage = "url('../../assets/sprites/maps/" + bcg.src + "')";
             bg.layer(i).speed = bcg.speed;
             bg.layer(i).height = bcg.height;

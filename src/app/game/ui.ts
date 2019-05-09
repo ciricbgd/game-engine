@@ -13,6 +13,8 @@ var pauseScreen: any;
 export var videoSrc: any;
 export var videoStage = 1;
 declare let $: any;
+export var scoreBoard, score = 0;
+
 
 export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen, theGameElement, energyBarElement) {
     hpBar = hpBarParam;
@@ -24,20 +26,11 @@ export function init(hpBarParam, gameScreenParam, pauseScreenParam, videoScreen,
     gameWon = <HTMLElement>document.querySelector("#gameWon");
     gameLost = <HTMLElement>document.querySelector("#gameLost");
     gamePaused = <HTMLElement>document.querySelector("#gamePaused");
+    scoreBoard = <HTMLElement>document.querySelector("#scoreNumber");
+    updateScore(0);
     initVideo(videoScreen);
 
     cryAgain = <HTMLElement>document.querySelector("#cryAgain");
-
-    $.ajax({
-        url: `https://api.giphy.com/v1/gifs/random?api_key=IH5OMHObs41e3oPajWu2hWD258XrAylr&tag=cry&rating=PG-13`,
-        type: 'GET',
-        error: function () { },
-        success: function (gif) {
-            cryAgain.href = gif.data.images.original.url;
-
-            console.log(cryAgain.href);
-        }
-    });
 
 }
 
@@ -196,7 +189,25 @@ export var gameOutcome = {
     lost() {
         disablePause();
         togglePause('paused');
+
+        $.ajax({
+            url: `https://api.giphy.com/v1/gifs/random?api_key=IH5OMHObs41e3oPajWu2hWD258XrAylr&tag=cry&rating=PG-13`,
+            type: 'GET',
+            error: function () { },
+            success: function (gif) {
+                cryAgain.href = gif.data.images.original.url;
+
+                console.log(cryAgain.href);
+            }
+        });
+
         gamePaused.style.display = "none";
         gameLost.style.display = "block";
     }
+}
+
+
+export function updateScore(num) {
+    score += Math.round(num);
+    scoreBoard.innerHTML = score;
 }

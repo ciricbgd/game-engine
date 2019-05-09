@@ -33,8 +33,10 @@ export class Player extends Unit {
         if (this.inv == null) {
             this.inv = clock.getTime() + 1000//Time in ms of invulnerability;
             this.hp -= dmg;
+            //this.screen.filter = "invert(50%)";
         }
         else if (this.inv != null && time > this.inv) {
+            //this.screen.filter = "invert(100%)";
             this.inv = null;
         }
         else {
